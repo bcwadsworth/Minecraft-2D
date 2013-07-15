@@ -1,4 +1,4 @@
-from Base.utils import *
+from Renderers.utils import *
 
 class BlocksManager:
     
@@ -42,6 +42,7 @@ class Block:
     bid = None
     image = None
     name = None
+    ObjectArray = []
     
     def __init__(self, bid, image, name):
         self.bid = bid
