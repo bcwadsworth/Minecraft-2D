@@ -126,6 +126,4 @@ class gameObject:
                     gameObject.gameObjectArray.remove(self.array)
                     self.array = -1
                     gameObject.gameObjects += -1
-                    
-               
 
