@@ -4,16 +4,17 @@ Created on Jul 15, 2013
 @author: python10
 '''
 import pygame
-from Renderers.Block import *
+from Generators.BlockControl import *
 from Renderers.Entity import *
 from Renderers.Menu import *
 
 color = (0,0,0)
+world = BlockTerrainControl(pygame, "World", 0)
 
 def draw():
     screen.fill(color)
-    for n in range(0, len(Block.Block.ObjectArray)):
-        screen.blit(Block.Block.ObjectArray[n][0], Block.Block.ObjectArray[n][1])
+    for chunk in world.getChunks():
+        pass
                 # Array Entry = file, position
     for n in range(0, len(Entity.ObjectArray)):
         screen.blit(Entity.ObjectArray[n][0], Entity.ObjectArray[n][1])

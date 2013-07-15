@@ -14,6 +14,8 @@ class BlockTerrainControl:
         self.blocksManager = BlocksManager(pygame)
         self.chunks = BlockChunkControl(self.seed, (0,0), self.blocksManager),
         
+    def getChunks(self):
+        return self.chunks
     
 class BlockChunkControl:
     
