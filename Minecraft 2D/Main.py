@@ -18,7 +18,7 @@ def draw():
     for n in range(0, len(Entity.ObjectArray)):
         screen.blit(Entity.ObjectArray[n][0], Entity.ObjectArray[n][1])
                 # Array Entry = file, position
-        for n in range(0, len(Menu.ObjectArray)):
+    for n in range(0, len(Menu.ObjectArray)):
         screen.blit(Menu.ObjectArray[n][0], Menu.ObjectArray[n][1])
                 # Array Entry = file, position
         pygame.display.flip()
