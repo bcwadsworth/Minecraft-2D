@@ -12,8 +12,8 @@ pig = 4
 cow = 5
 sheep = 6
 chicken = 7
-dog = 8
-horse = 9
+horse = 8
+villager = 9
 arrow = 10'''
 
 class entityManager:
@@ -26,8 +26,8 @@ class entityManager:
         self.cow = []
         self.sheep = []
         self.chicken = []
-        self.dog = []
         self.horse = []
+        self.villager = []
         self.arrow = []
         self.allentitys = []
     def newentity(self, entityID):
