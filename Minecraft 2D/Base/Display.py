@@ -90,7 +90,7 @@ class gameObject:
               self.array = -1
           
          self.update()
-         print str(self) +" Initialized'
+         print str(self) +" Initialized"
           
      def update(self):
           if self.active and self.blit:
