@@ -26,6 +26,46 @@ class BlockTerrainControl:
     def getChunkDimensions(self):
         return self.chunkDimensions
     
+    def convertToX(self, convert):
+        return convert%self.chunkDimensions[0]
+    
+    def convertToY(self, convert):
+        return self.chunkDimensions[1] - ((convert/self.chunkDimensions[0]))
+    
+    def convertToCoords(self, tile):
+        return (self.convertToX(tile),self.convertToY(tile))
+    
+    def convertFromCoords(self, coord):
+        x = self.chunkDimensions[0] - coord[0]
+        y = self.chunkDimensions[1] * coord[1]
+        return y-x
+    
+    def getChunksToRender(self, offset, width):
+        
+        totalChunks = width/(self.getChunkDimensions()[0]*16)
+        if(not totalChunks%self.getChunkDimensions()[0] == 0):
+            totalChunks += 1
+
+        addToEnd = 0
+
+        try:
+            self.getChunks()[offset[0] / 16 / 16]
+            startingChunk = offset[0] / 16 / 16
+        except:
+            startingChunk = 0
+            
+        if(startingChunk < 0):
+            addToEnd = startingChunk
+            startingChunk = 0
+        
+        try:
+            self.getChunks()[startingChunk+totalChunks+addToEnd]
+            endingChunk = startingChunk+totalChunks+addToEnd
+        except:
+            endingChunk = len(self.getChunks())-1
+            
+        return self.getChunks()[startingChunk:endingChunk]
+    
 class BlockChunkControl:
     
     seed = None

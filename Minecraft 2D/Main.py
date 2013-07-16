@@ -10,7 +10,7 @@ flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
 display = pygame.display
 screen = None
 clock = pygame.time.Clock()
-fps = 60
+fps = 120
 
 color = (0,0,0)
 world = BlockTerrainControl(pygame, "World", 0)
@@ -34,14 +34,17 @@ def main():
         clock.tick(fps)
 
 def spawnPlayer():
-    global offset
+    global offset, playerPos
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
     offset = [-((width/2/16)*16 - ((chunk.getDimensions()[0]/2) * 16)), (chunk.getDimensions()[1]-80)*16]
 
 def draw():
     screen.fill(color)
-    for chunk in world.getChunks():
+
+    
+
+    for chunk in world.getChunksToRender(offset, width):
         currx = 0
         curry = 0
         for block in chunk.getBlocks():
