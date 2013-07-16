@@ -1,7 +1,8 @@
-import pygame, sys, os, time
+import pygame, sys, os, time, imput
 from Generators.BlockControl import *
 from Renderers.Entity import *
 from Renderers.Menu import *
+
 
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
