@@ -8,6 +8,7 @@ class BlockTerrainControl:
     blocksManager = None
     chunks = None
     chunkDimensions = None
+    amtchunks = None
     
     def __init__(self, pygame, name, seed):
         self.name = name
@@ -15,9 +16,9 @@ class BlockTerrainControl:
         self.blocksManager = BlocksManager(pygame)
         self.chunkDimensions = (16, 256)
         
-        amtchunks = 10 #Temporary, don't change
-        self.chunks = [None] * amtchunks
-        for i in range(amtchunks):
+        self.amtchunks = 10 #Temporary, don't change
+        self.chunks = [None] * self.amtchunks
+        for i in range(self.amtchunks):
             self.chunks[i] = BlockChunkControl(self.seed, ((i * self.chunkDimensions[0]),0), self.blocksManager, self)      
         
     def getChunks(self):
@@ -25,6 +26,9 @@ class BlockTerrainControl:
     
     def getChunkDimensions(self):
         return self.chunkDimensions
+    
+    def getBlockDimensions(self):
+        return self.blocksManager.getBlockDimensions()
     
     def convertToX(self, convert):
         return convert%self.chunkDimensions[0]
@@ -42,29 +46,47 @@ class BlockTerrainControl:
     
     def getChunksToRender(self, offset, width):
         
-        totalChunks = width/(self.getChunkDimensions()[0]*16)
-        if(not totalChunks%self.getChunkDimensions()[0] == 0):
-            totalChunks += 1
+        startingChunk = -1
+        
+        for i in range(len(self.getChunks())-1):
+            print self.getChunks()[i].getPosition()[0]
+            if(offset[0] >= self.getChunks()[i].getPosition()[0] and offset[0] < self.getChunks()[i+1].getPosition()[0]):
+                startingChunk = i
 
-        addToEnd = 0
+        print "Offset = "+str(offset[0])
 
-        try:
-            self.getChunks()[offset[0] / 16 / 16]
-            startingChunk = offset[0] / 16 / 16
-        except:
-            startingChunk = 0
-            
         if(startingChunk < 0):
-            addToEnd = startingChunk
+            self.addChunkWest()
             startingChunk = 0
         
-        try:
-            self.getChunks()[startingChunk+totalChunks+addToEnd]
-            endingChunk = startingChunk+totalChunks+addToEnd
-        except:
+        endingChunk = -1
+        
+        for i in range(len(self.getChunks())-1):
+            if(width + offset[0] >= self.getChunks()[i].getPosition()[0] and width + offset[0] < self.getChunks()[i+1].getPosition()[0]):
+                endingChunk = i
+        
+        if(endingChunk < 0):
+            self.addChunkEast()
             endingChunk = len(self.getChunks())-1
             
-        return self.getChunks()[startingChunk:endingChunk]
+        return self.getChunks()[startingChunk:endingChunk+1]
+    
+    def addChunkWest(self):
+        print "Adding Chunk West"
+        self.amtchunks += 1
+        newchunks = [None]
+        newchunks[0] = BlockChunkControl(self.seed, ((self.chunks[0].getPosition()[0] - self.chunkDimensions[0]),0), self.blocksManager, self)
+        newchunks += self.chunks
+        self.chunks = newchunks
+    
+    def addChunkEast(self):
+        print "Adding Chunk East"
+        self.amtchunks += 1
+        newchunks = [None]
+        newchunks[0] = BlockChunkControl(self.seed, ((self.chunks[-1].getPosition()[0] + self.chunkDimensions[0]),0), self.blocksManager, self)
+        newchunks = self.chunks + newchunks
+        self.chunks = newchunks
+        
     
 class BlockChunkControl:
     

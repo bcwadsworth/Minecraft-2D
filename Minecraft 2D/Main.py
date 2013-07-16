@@ -38,7 +38,7 @@ def spawnPlayer():
     global offset, playerPos
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
-    offset = [-((width/2/16) * 16 - ((chunk.getDimensions()[0]/2) * 16)), (chunk.getDimensions()[1]-80)*16]
+    offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
 
 def draw():
     screen.fill(color)
@@ -54,7 +54,7 @@ def draw():
                 curry += 1   
             if(not block.getId() == 0): #Air
                 location = (currx * block.getImage().getWidth() - offset[0] + (chunk.getPosition()[0]*16), curry * block.getImage().getHeight() - offset[1]) 
-                if(not (location[0] <= 0-(offset[0]/16)-block.getImage().getWidth()) and not (location[0] >= width + abs((offset[0]/16)+16)) and not (location[1] <= 0-(offset[1]/16)-block.getImage().getHeight()) and not (location[1] >= height + abs((offset[1]/16)+16))):     
+                if(not (location[0] <= 0-(offset[0]/world.getBlockDimensions()[0])-block.getImage().getWidth()) and not (location[0] >= width + abs((offset[0]/world.getBlockDimensions()[0])+world.getBlockDimensions()[0])) and not (location[1] <= 0-(offset[1]/world.getBlockDimensions()[1])-block.getImage().getHeight()) and not (location[1] >= height + abs((offset[1]/world.getBlockDimensions()[1])+world.getBlockDimensions()[1]))):     
                     screen.blit(block.getImage().getSurface(), location)
             currx += 1
                 # Array Entry = file, position
@@ -78,13 +78,13 @@ def keyCheck():
     pressed = pygame.key.get_pressed()
     
     if(pressed[pygame.K_w]):
-        offset[1] -= 16
+        offset[1] -= world.getBlockDimensions()[0]
     if(pressed[pygame.K_s]):
-        offset[1] += 16
+        offset[1] += world.getBlockDimensions()[0]
     if(pressed[pygame.K_a]):
-        offset[0] -= 16
+        offset[0] -= world.getBlockDimensions()[0]
     if(pressed[pygame.K_d]):
-        offset[0] += 16
+        offset[0] += world.getBlockDimensions()[0]
 
 def quitGame():
     global playing

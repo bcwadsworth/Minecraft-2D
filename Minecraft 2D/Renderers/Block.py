@@ -39,6 +39,9 @@ class BlocksManager:
             if(b.getId() == bid):
                 return b
         return None
+    
+    def getBlockDimensions(self):
+        return self.blocksDimensions
 
 class Block:
     bid = None
