@@ -1,9 +1,12 @@
-import pygame, sys, os, time, imput
+import pygame, sys, os, gametime, imput
 from Generators.BlockControl import *
 from Renderers.Entity import *
 from Renderers.Menu import *
 
-
+#As part of a required Enrichment Center protocol,
+#the previous statement that we would not monitor
+#the test area was a complete fabrication.
+#We will stop enhancing the truth in three. two. *zzzt* 
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
@@ -16,6 +19,7 @@ fps = 60
 
 color = (125,206,250)
 world = BlockTerrainControl(pygame, "World", 0)
+time = gametime.timemanager(fps)
 offset = [0,0]
 
 playing = False
@@ -42,7 +46,8 @@ def spawnPlayer():
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
 
 def draw():
-    screen.fill(color)
+    time.tick()
+    screen.fill(time.color)
 
     world.draw(screen, offset, resolution)
             
