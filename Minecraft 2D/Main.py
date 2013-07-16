@@ -1,7 +1,6 @@
 import pygame, sys, os, gametime, imput
 from Generators.BlockControl import *
 from Renderers.Entity import *
-from Renderers.Menu import *
 
 #As part of a required Enrichment Center protocol,
 #the previous statement that we would not monitor
