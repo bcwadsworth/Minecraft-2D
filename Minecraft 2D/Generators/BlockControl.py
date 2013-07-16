@@ -52,8 +52,6 @@ class BlockTerrainControl:
             if(offset[0] >= self.getChunks()[i].getPosition()[0]*16 and offset[0] < self.getChunks()[i+1].getPosition()[0]*16):
                 startingChunk = i
 
-        print "Starting Chunk: "+str(startingChunk)
-
         if(startingChunk < 0):
             self.addChunkWest()
             startingChunk = 0
