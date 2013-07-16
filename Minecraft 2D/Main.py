@@ -7,6 +7,7 @@ from Renderers.Menu import *
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
+imput = imput.imputhandler
 
 display = pygame.display
 screen = None
