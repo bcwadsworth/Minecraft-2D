@@ -14,7 +14,7 @@ fps = 120
 
 color = (0,0,0)
 world = BlockTerrainControl(pygame, "World", 0)
-offset = [0, (128*16)]
+offset = [0,0]
 
 playing = False
 
@@ -37,7 +37,7 @@ def spawnPlayer():
     global offset, playerPos
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
-    offset = [-((width/2/16)*16 - ((chunk.getDimensions()[0]/2) * 16)), (chunk.getDimensions()[1]-80)*16]
+    offset = [-((width/2/16) * 16 - ((chunk.getDimensions()[0]/2) * 16)), (chunk.getDimensions()[1]-80)*16]
 
 def draw():
     screen.fill(color)
