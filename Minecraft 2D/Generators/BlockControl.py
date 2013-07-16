@@ -19,7 +19,7 @@ class BlockTerrainControl:
         self.amtchunks = 2
         self.chunks = [None] * self.amtchunks
         for i in range(self.amtchunks):
-            self.chunks[i] = BlockChunkControl(self.seed, ((i * self.chunkDimensions[0]),0), self.blocksManager, self)      
+            self.chunks[i] = BlockChunkControl(self.seed, ((i * self.chunkDimensions[0]),0), self.blocksManager, self, i)      
         
     def getChunks(self):
         return self.chunks
@@ -69,20 +69,24 @@ class BlockTerrainControl:
         return self.getChunks()[startingChunk:endingChunk+1]
     
     def addChunkWest(self):
-        print "Adding Chunk West"
         self.amtchunks += 1
         newchunks = [None]
-        newchunks[0] = BlockChunkControl(self.seed, ((self.chunks[0].getPosition()[0] - self.chunkDimensions[0]),0), self.blocksManager, self)
+        newchunks[0] = BlockChunkControl(self.seed, ((self.chunks[0].getPosition()[0] - self.chunkDimensions[0]),0), self.blocksManager, self, 0)
         newchunks += self.chunks
         self.chunks = newchunks
+        for i in range(len(self.chunks)):
+            if(i > 0):
+                self.chunks[i].setPosInArray(i)
     
     def addChunkEast(self):
-        print "Adding Chunk East"
         self.amtchunks += 1
         newchunks = [None]
-        newchunks[0] = BlockChunkControl(self.seed, ((self.chunks[-1].getPosition()[0] + self.chunkDimensions[0]),0), self.blocksManager, self)
+        newchunks[0] = BlockChunkControl(self.seed, ((self.chunks[-1].getPosition()[0] + self.chunkDimensions[0]),0), self.blocksManager, self, len(self.chunks))
         newchunks = self.chunks + newchunks
         self.chunks = newchunks
+        for i in range(len(self.chunks)):
+            if(i < len(self.chunks)):
+                self.chunks[i].setPosInArray(i)
         
     def draw(self, screen, offset, resolution):
         width = resolution[0]
@@ -111,33 +115,45 @@ class BlockChunkControl:
     blocksManager = None
     blocks = None
     dimensions = None
+    terrainControl = None
+    posInArray = None
+
     
-    def __init__(self, seed, position, blocksManager, terrainControl):
-        self.seed = seed
+    def __init__(self, seed, position, blocksManager, terrainControl, posInArray):
+        self.seed = seed+position[0]/16
         self.position = position
         self.blocksManager = blocksManager
+        self.terrainControl = terrainControl
         self.dimensions = terrainControl.getChunkDimensions()
-        blocks = [None] * (self.dimensions[0]*self.dimensions[1])
+        self.posInArray = posInArray
         
         assert isinstance(blocksManager, BlocksManager)
         
-        #GENERATION
+        self.generateTerrain()
+        
+    def generateTerrain(self):
+        blocks = [None] * (self.dimensions[0]*self.dimensions[1])
+        
         rand = random.Random()
-        rand.seed(seed+self.position[0]/16)
+        rand.seed(self.seed+self.position[0]/16)
+        
         for i in range(len(blocks)):
             x = i%self.dimensions[0]
             y = self.dimensions[1] - ((i)/self.dimensions[0])
             if(y > 64):
-                blocks[i] = blocksManager.getBlockById(0)
+                blocks[i] = self.blocksManager.getBlockById(0)
             if(y == 64):
-                blocks[i] = blocksManager.getBlockById(2)
+                blocks[i] = self.blocksManager.getBlockById(2)
             if(y < 64 and y >= 56):
-                blocks[i] = blocksManager.getBlockById(rand.randint(1, 7))
+                blocks[i] = self.blocksManager.getBlockById(rand.randint(1, 7))
             if(y < 56):
-                blocks[i] = blocksManager.getBlockById(1)
+                blocks[i] = self.blocksManager.getBlockById(1)
                 
         self.blocks = blocks
         
+    def setPosInArray(self, pos):
+        self.posInArray = pos
+                
     def getBlocks(self):
         return self.blocks
     
@@ -160,3 +176,29 @@ class BlockChunkControl:
         x = self.dimensions[0] - coord[0]
         y = self.dimensions[1] * coord[1]
         return y-x
+    
+    def getNeighborBlock(self, block, direction):
+        if(direction == 0): #North
+            return block - self.getDimensions()[1]
+        if(direction == 1): #East
+            if((block + 1) % self.getDimensions()[1] > block % self.getDimensions()[1]):
+                return block + 1
+            else:
+                neighborChunk = self.getNeighborChunk(0)
+                return neighborChunk.getBlocks()[block - (block % self.getDimensions()[1])]
+        if(direction == 2): #South
+            return block + self.getDimensions()[1]
+        if(direction == 3): #West
+            if((block - 1) % self.getDimensions()[1] < block % self.getDimensions()[1]):
+                return block - 1
+            else:
+                neighborChunk = self.getNeighborChunk(0)
+                return neighborChunk.getBlocks()[block + (self.getDimensions()[1] - (block % self.getDimensions()[1]))]
+        
+    def getNeighborChunk(self, direction):
+        if(direction == 0): #East
+            return self.terrainControl.getChunks()[self.posInArray + 1]
+        if(direction == 1): #West
+            return self.terrainControl.getChunks()[self.posInArray - 1]
+        
+        
