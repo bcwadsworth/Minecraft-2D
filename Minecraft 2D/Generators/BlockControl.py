@@ -155,25 +155,25 @@ class BlockChunkControl:
                 blocks[i] = self.blocksManager.getBlockById(0)
             if(256-y < 64):
                 blocks[i] = self.blocksManager.getBlockById(1)
-        
-#         for i in range(len(blocks)):
-#             x = i%self.dimensions[0]
-#             y = i/self.dimensions[0]
-#             if(256-y > 64):
-#                 blocks[i] = self.blocksManager.getBlockById(0)
-#             if(256-y == 64):
-#                 blocks[i] = self.blocksManager.getBlockById(3)
-#             if(256-y < 64 and 256-y >= 56):
-#                 blocks[i] = self.blocksManager.getBlockById(3)
-#             if(256-y < 56):
-#                 blocks[i] = self.blocksManager.getBlockById(1)
                 
         self.blocks = blocks
                 
     def generateNoise(self, rand):
         array = [0] * self.getDimensions()[0]
-        for i in range(len(array)):
-            array[i] = rand.randint(0,16)
+        
+        currNumerator = 16
+        amtTimes = 1
+        moveFactor = 0.8
+        
+        while currNumerator > 1:
+            lastBlock = 0
+            for i in range(amtTimes):
+                pass
+                
+            currNumerator /= 2
+            amtTimes = len(array)/currNumerator
+            moveFactor -= 0.2
+            
         return array
         
     def setPosInArray(self, pos):
