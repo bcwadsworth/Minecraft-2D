@@ -34,15 +34,15 @@ class BlockTerrainControl:
         return convert%self.chunkDimensions[0]
     
     def convertToY(self, convert):
-        return self.chunkDimensions[1] - ((convert/self.chunkDimensions[0]))
+        return convert/self.chunkDimensions[1]
     
     def convertToCoords(self, tile):
         return (self.convertToX(tile),self.convertToY(tile))
     
     def convertFromCoords(self, coord):
         x = self.chunkDimensions[0] - coord[0]
-        y = self.chunkDimensions[1] * coord[1]
-        return y-x
+        y = self.chunkDimensions[0] * coord[1]
+        return y+x
     
     def getChunksToRender(self, offset, width):
         
@@ -96,9 +96,11 @@ class BlockTerrainControl:
             currx = 0
             curry = 0
             for block in chunk.getBlocks():
+                
                 if(currx > chunk.getDimensions()[0]-1):
                     currx = 0
                     curry += 1   
+                    
                 if(not block.getId() == 0): #Air
                     location = (currx * block.getImage().getWidth() - offset[0] + (chunk.getPosition()[0]*16), curry * block.getImage().getHeight() - offset[1]) 
                     if(not (location[0] <= 0-abs(offset[0]/self.getBlockDimensions()[0])-block.getImage().getWidth()) 
@@ -106,6 +108,7 @@ class BlockTerrainControl:
                        and not (location[1] <= 0-abs(offset[1]/self.getBlockDimensions()[1])-block.getImage().getHeight()) 
                        and not (location[1] >= height + abs((offset[1]/self.getBlockDimensions()[1])+self.getBlockDimensions()[1]))):     
                         screen.blit(block.getImage().getSurface(), location)
+                        
                 currx += 1
     
 class BlockChunkControl:
@@ -132,24 +135,46 @@ class BlockChunkControl:
         self.generateTerrain()
         
     def generateTerrain(self):
+        
         blocks = [None] * (self.dimensions[0]*self.dimensions[1])
         
         rand = random.Random()
-        rand.seed(self.seed+self.position[0]/16)
+        rand.seed(self.seed)
+        
+        noise = self.generateNoise(rand)
         
         for i in range(len(blocks)):
             x = i%self.dimensions[0]
-            y = self.dimensions[1] - ((i)/self.dimensions[0])
-            if(y > 64):
-                blocks[i] = self.blocksManager.getBlockById(0)
-            if(y == 64):
+            y = i/self.dimensions[0]
+            print x,y
+            if(noise[x] == 256-y-64):
                 blocks[i] = self.blocksManager.getBlockById(2)
-            if(y < 64 and y >= 56):
-                blocks[i] = self.blocksManager.getBlockById(rand.randint(1, 7))
-            if(y < 56):
+            elif(noise[x] > 256-y-64):
+                blocks[i] = self.blocksManager.getBlockById(3)
+            else:
+                blocks[i] = self.blocksManager.getBlockById(0)
+            if(256-y < 64):
                 blocks[i] = self.blocksManager.getBlockById(1)
+        
+#         for i in range(len(blocks)):
+#             x = i%self.dimensions[0]
+#             y = i/self.dimensions[0]
+#             if(256-y > 64):
+#                 blocks[i] = self.blocksManager.getBlockById(0)
+#             if(256-y == 64):
+#                 blocks[i] = self.blocksManager.getBlockById(3)
+#             if(256-y < 64 and 256-y >= 56):
+#                 blocks[i] = self.blocksManager.getBlockById(3)
+#             if(256-y < 56):
+#                 blocks[i] = self.blocksManager.getBlockById(1)
                 
         self.blocks = blocks
+                
+    def generateNoise(self, rand):
+        array = [0] * self.getDimensions()[0]
+        for i in range(len(array)):
+            array[i] = rand.randint(0,16)
+        return array
         
     def setPosInArray(self, pos):
         self.posInArray = pos
@@ -167,15 +192,15 @@ class BlockChunkControl:
         return convert%self.dimensions[0]
     
     def convertToY(self, convert):
-        return self.dimensions[1] - ((convert/self.dimensions[0]))
+        return convert/self.dimensions[0]
     
     def convertToCoords(self, tile):
         return (self.convertToX(tile),self.convertToY(tile))
     
     def convertFromCoords(self, coord):
         x = self.dimensions[0] - coord[0]
-        y = self.dimensions[1] * coord[1]
-        return y-x
+        y = self.dimensions[0] * coord[1]
+        return y+x
     
     def getNeighborBlock(self, block, direction):
         if(direction == 0): #North
