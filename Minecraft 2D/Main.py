@@ -44,18 +44,7 @@ def spawnPlayer():
 def draw():
     screen.fill(color)
 
-    for chunk in world.getChunksToRender(offset, width):
-        currx = 0
-        curry = 0
-        for block in chunk.getBlocks():
-            if(currx > chunk.getDimensions()[0]-1):
-                currx = 0
-                curry += 1   
-            if(not block.getId() == 0): #Air
-                location = (currx * block.getImage().getWidth() - offset[0] + (chunk.getPosition()[0]*16), curry * block.getImage().getHeight() - offset[1]) 
-                if(not (location[0] <= 0-abs(offset[0]/world.getBlockDimensions()[0])-block.getImage().getWidth()) and not (location[0] >= width + abs((offset[0]/world.getBlockDimensions()[0])+world.getBlockDimensions()[0])) and not (location[1] <= 0-(offset[1]/world.getBlockDimensions()[1])-block.getImage().getHeight()) and not (location[1] >= height + abs((offset[1]/world.getBlockDimensions()[1])+world.getBlockDimensions()[1]))):     
-                    screen.blit(block.getImage().getSurface(), location)
-            currx += 1
+    world.draw(screen, offset, resolution)
             
                 # Array Entry = file, position
 #     for n in range(0, len(Entity.ObjectArray)):

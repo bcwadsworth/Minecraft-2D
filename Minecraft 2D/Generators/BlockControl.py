@@ -84,6 +84,25 @@ class BlockTerrainControl:
         newchunks = self.chunks + newchunks
         self.chunks = newchunks
         
+    def draw(self, screen, offset, resolution):
+        width = resolution[0]
+        height = resolution[1]
+        
+        for chunk in self.getChunksToRender(offset, width):
+            currx = 0
+            curry = 0
+            for block in chunk.getBlocks():
+                if(currx > chunk.getDimensions()[0]-1):
+                    currx = 0
+                    curry += 1   
+                if(not block.getId() == 0): #Air
+                    location = (currx * block.getImage().getWidth() - offset[0] + (chunk.getPosition()[0]*16), curry * block.getImage().getHeight() - offset[1]) 
+                    if(not (location[0] <= 0-abs(offset[0]/self.getBlockDimensions()[0])-block.getImage().getWidth()) 
+                       and not (location[0] >= width + abs((offset[0]/self.getBlockDimensions()[0])+self.getBlockDimensions()[0])) 
+                       and not (location[1] <= 0-abs(offset[1]/self.getBlockDimensions()[1])-block.getImage().getHeight()) 
+                       and not (location[1] >= height + abs((offset[1]/self.getBlockDimensions()[1])+self.getBlockDimensions()[1]))):     
+                        screen.blit(block.getImage().getSurface(), location)
+                currx += 1
     
 class BlockChunkControl:
     
