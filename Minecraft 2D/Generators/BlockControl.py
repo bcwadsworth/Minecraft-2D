@@ -16,7 +16,7 @@ class BlockTerrainControl:
         self.blocksManager = BlocksManager(pygame)
         self.chunkDimensions = (16, 256)
         
-        self.amtchunks = 10 #Temporary, don't change
+        self.amtchunks = 2
         self.chunks = [None] * self.amtchunks
         for i in range(self.amtchunks):
             self.chunks[i] = BlockChunkControl(self.seed, ((i * self.chunkDimensions[0]),0), self.blocksManager, self)      
@@ -49,11 +49,10 @@ class BlockTerrainControl:
         startingChunk = -1
         
         for i in range(len(self.getChunks())-1):
-            print self.getChunks()[i].getPosition()[0]
-            if(offset[0] >= self.getChunks()[i].getPosition()[0] and offset[0] < self.getChunks()[i+1].getPosition()[0]):
+            if(offset[0] >= self.getChunks()[i].getPosition()[0]*16 and offset[0] < self.getChunks()[i+1].getPosition()[0]*16):
                 startingChunk = i
 
-        print "Offset = "+str(offset[0])
+        print "Starting Chunk: "+str(startingChunk)
 
         if(startingChunk < 0):
             self.addChunkWest()
@@ -62,7 +61,7 @@ class BlockTerrainControl:
         endingChunk = -1
         
         for i in range(len(self.getChunks())-1):
-            if(width + offset[0] >= self.getChunks()[i].getPosition()[0] and width + offset[0] < self.getChunks()[i+1].getPosition()[0]):
+            if(width + offset[0] >= self.getChunks()[i].getPosition()[0]*16 and width + offset[0] < self.getChunks()[i+1].getPosition()[0]*16):
                 endingChunk = i
         
         if(endingChunk < 0):
@@ -107,7 +106,7 @@ class BlockChunkControl:
         
         #GENERATION
         rand = random.Random()
-        rand.seed(seed)
+        rand.seed(seed+self.position[0]/16)
         for i in range(len(blocks)):
             x = i%self.dimensions[0]
             y = self.dimensions[1] - ((i)/self.dimensions[0])
@@ -116,7 +115,7 @@ class BlockChunkControl:
             if(y == 64):
                 blocks[i] = blocksManager.getBlockById(2)
             if(y < 64 and y >= 56):
-                blocks[i] = blocksManager.getBlockById(3)
+                blocks[i] = blocksManager.getBlockById(rand.randint(1, 7))
             if(y < 56):
                 blocks[i] = blocksManager.getBlockById(1)
                 

@@ -11,9 +11,9 @@ flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
 display = pygame.display
 screen = None
 clock = pygame.time.Clock()
-fps = 120
+fps = 60
 
-color = (0,0,0)
+color = (125,206,250)
 world = BlockTerrainControl(pygame, "World", 0)
 offset = [0,0]
 
@@ -57,6 +57,7 @@ def draw():
                 if(not (location[0] <= 0-(offset[0]/world.getBlockDimensions()[0])-block.getImage().getWidth()) and not (location[0] >= width + abs((offset[0]/world.getBlockDimensions()[0])+world.getBlockDimensions()[0])) and not (location[1] <= 0-(offset[1]/world.getBlockDimensions()[1])-block.getImage().getHeight()) and not (location[1] >= height + abs((offset[1]/world.getBlockDimensions()[1])+world.getBlockDimensions()[1]))):     
                     screen.blit(block.getImage().getSurface(), location)
             currx += 1
+            
                 # Array Entry = file, position
 #     for n in range(0, len(Entity.ObjectArray)):
 #         screen.blit(Entity.ObjectArray[n][0], Entity.ObjectArray[n][1])
@@ -64,6 +65,7 @@ def draw():
 #     for n in range(0, len(Menu.ObjectArray)):
 #         screen.blit(Menu.ObjectArray[n][0], Menu.ObjectArray[n][1])
                 # Array Entry = file, position
+                
     display.flip()
 
 def keyCheck():
