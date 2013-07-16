@@ -8,7 +8,7 @@ class BlocksManager:
         self.blocks = (
         Block(0, None, "Air"),
         Block(1, Image(pygame.image.load("assets/blocks/stone.png"), (16, 16), (0,0)), "Stone"),
-        Block(2, Image(pygame.image.load("assets/blocks/grass.png"), (16, 16), (0,0)), "Grass"),
+        Block(2, Image(pygame.image.load("assets/blocks/grass_side.png"), (16, 16), (0,0)), "Grass"),
         Block(3, Image(pygame.image.load("assets/blocks/dirt.png"), (16, 16), (0,0)), "Dirt"),
         Block(4, Image(pygame.image.load("assets/blocks/cobblestone.png"), (16, 16), (0,0)), "Cobblestone"),
         Block(5, Image(pygame.image.load("assets/blocks/planks_oak.png"), (16, 16), (0,0)), "Oak Wood Plank"),

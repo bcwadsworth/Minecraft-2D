@@ -23,32 +23,49 @@ class BlockChunkControl:
     position = None
     blocksManager = None
     blocks = None
+    dimensions = None
     
     def __init__(self, seed, position, blocksManager):
         self.seed = seed
         self.position = position
         self.blocksManager = blocksManager
-        blocks = [None] * (256*16)
+        self.dimensions = (16,128)
+        blocks = [None] * (self.dimensions[0]*self.dimensions[1])
         
         assert isinstance(blocksManager, BlocksManager)
         
         #GENERATION
-        rand = random(seed)
+        rand = random.Random()
+        rand.seed(seed)
         for i in range(len(blocks)):
-            x = i%16
-            y = 256 - ((i-1)/16)
+            x = i%self.dimensions[0]
+            y = self.dimensions[1] - ((i)/self.dimensions[0])
+            print x, y
             if(y > 64):
                 blocks[i] = blocksManager.getBlockById(0)
             if(y == 64):
                 blocks[i] = blocksManager.getBlockById(2)
             if(y < 64):
                 blocks[i] = blocksManager.getBlockById(1)
+                
+        self.blocks = blocks
         
     def getBlocks(self):
         return self.blocks
     
+    def getDimensions(self):
+        return self.dimensions
+    
     def convertToX(self, convert):
-        return convert%16
+        return convert%self.dimensions[0]
     
     def convertToY(self, convert):
-        return 256 - ((convert-1/16))
+        return self.dimensions[1] - ((convert/self.dimensions[0])) - 1
+    
+    def convertToCoords(self, tile):
+        return (self.convertToX(tile),self.convertToY(tile))
+    
+    def convertFromCoords(self, coord):
+        x = self.dimensions[0] - coord[0]
+        y = self.dimensions[1] * coord[1]
+        return y-x
