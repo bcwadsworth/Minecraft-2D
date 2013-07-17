@@ -163,7 +163,7 @@ class BlockChunkControl:
                 blocks[i] = self.blocksManager.getBlockById(3)
             elif(noiseb[x] >= self.getDimensions()[1]-y-56):
                 blocks[i] = self.blocksManager.getBlockById(1)
-            elif(noiseb[x] < self.getDimensions()[1]-y-1):
+            elif(noiseb[x] < self.getDimensions()[1]-y-2):
                 blocks[i] = self.blocksManager.getBlockById(0)
             else:
                 blocks[i] = self.blocksManager.getBlockById(7)
