@@ -35,3 +35,6 @@ class Image:
         
     def setDimensions(self, dimensions):
         self.dimensions = dimensions
+        
+def average(a, b):
+    return (a+b)/2
