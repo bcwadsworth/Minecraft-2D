@@ -1,4 +1,4 @@
-aaaimport pygame, sys, os, gametime, imput
+import pygame, sys, os, gametime, imput
 from Generators.BlockControl import *
 from Renderers.Entity import *
 from Renderers.Block import *
