@@ -1,5 +1,6 @@
 import random
 from Renderers.Block import BlocksManager
+from Renderers.utils import average
 
 class BlockTerrainControl:
     
@@ -16,7 +17,7 @@ class BlockTerrainControl:
         self.blocksManager = BlocksManager(pygame)
         self.chunkDimensions = (16, 256)
         
-        self.amtchunks = 2
+        self.amtchunks = 1
         self.chunks = [None] * self.amtchunks
         for i in range(self.amtchunks):
             self.chunks[i] = BlockChunkControl(self.seed, ((i * self.chunkDimensions[0]),0), self.blocksManager, self, i)      
@@ -146,15 +147,12 @@ class BlockChunkControl:
         for i in range(len(blocks)):
             x = i%self.dimensions[0]
             y = i/self.dimensions[0]
-            print x,y
             if(noise[x] == 256-y-64):
                 blocks[i] = self.blocksManager.getBlockById(2)
             elif(noise[x] > 256-y-64):
                 blocks[i] = self.blocksManager.getBlockById(3)
-            else:
+            elif(noise[x] < 256-y-64):
                 blocks[i] = self.blocksManager.getBlockById(0)
-            if(256-y < 64):
-                blocks[i] = self.blocksManager.getBlockById(1)
                 
         self.blocks = blocks
                 
@@ -163,16 +161,19 @@ class BlockChunkControl:
         
         currNumerator = 16
         amtTimes = 1
-        moveFactor = 0.8
+        moveFactor = 16
         
         while currNumerator > 1:
             lastBlock = 0
             for i in range(amtTimes):
-                pass
+                div = currNumerator/2
+                array[lastBlock+div] = rand.randint(array[lastBlock]-moveFactor, array[lastBlock+(2*div)-1]+moveFactor)
+                lastBlock = lastBlock+currNumerator
                 
             currNumerator /= 2
             amtTimes = len(array)/currNumerator
-            moveFactor -= 0.2
+            if(moveFactor%2 == 0 and moveFactor > 1):
+                moveFactor /= 2
             
         return array
         
