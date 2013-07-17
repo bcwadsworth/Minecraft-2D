@@ -7,7 +7,7 @@ Created on Jul 16, 2013
 class CraftingManager:
     def startcrafting(self,size):
         self.inventory = []
-        for n in range(1,(size**)):
+        for n in range(1,(size**2)):
             self.inventory.append([0,0])
     def newslotitem (self,slot,item,amount):
         self.inventory[slot] = [item, amount]

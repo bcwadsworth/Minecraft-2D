@@ -2,8 +2,8 @@ import pygame, sys, os, gametime, imput
 from Generators.BlockControl import *
 from Renderers.Entity import *
 from Renderers.Block import *
-from blockmanagers.Inventory import *
-from blockmanagers.Crafting import *
+from Blockmanagers.Inventory import *
+from Blockmanagers.Crafting import *
 from Renderers.Menu import *
 
 #As part of a required Enrichment Center protocol,
