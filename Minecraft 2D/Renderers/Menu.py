@@ -4,6 +4,7 @@ Created on Jul 15, 2013
 @author: python09
 '''
 import pygame
+import random
 
 class Menu:
     # the images for the buttons
@@ -15,11 +16,24 @@ class Menu:
     quitRect = None
     # the screen to draw on
     screen = None
+    font = None
     pygameControl = None
     
     buttonGap = 10 # the vertical space between buttons
     width = None # the width of the screen
     height = None # height of the screen
+    snippit = None # the phrase to display on the menu
+    rotateAngle = 30
+    snippitX = None
+    snippitY = None
+    
+    def loadSnippit(self):
+        loadFile = open('assets/snippets.txt')
+        text = loadFile.read()
+        snippits = text.split('-')
+        rand = random.Random()
+        i = rand.randint(0, len(snippits)-1)
+        return snippits[i]
     
     def __init__(self, surface, width, height):
         pygame.init()
@@ -36,10 +50,18 @@ class Menu:
         self.playRect = pygame.Rect(self.optionsRect.x, self.optionsRect.y - self.playButton.get_rect().height - self.buttonGap, self.playButton.get_rect().width,
                                     self.playButton.get_rect().height)
         
+        self.font = pygame.font.SysFont('Arial', 32)        
+        self.snippit = self.loadSnippit()     
+        self.snippitX = width/2
+        self.snippitY = height/6
+        
     def draw(self):
         self.screen.blit(self.quitButton, (self.quitRect.x, self.quitRect.y))
         self.screen.blit(self.optionsButton, (self.optionsRect.x, self.optionsRect.y))
         self.screen.blit(self.playButton, (self.playRect.x, self.playRect.y))
+        pic1 = self.font.render(self.snippit, 1, (255, 255, 0)) # save the text as an image
+        rotatedPic = pygame.transform.rotate(pic1, self.rotateAngle) # rotate the image
+        self.screen.blit(rotatedPic, (self.snippitX, self.snippitY)) #show the image
     
     #the event handler
     def getEvents(self, event):
@@ -50,4 +72,5 @@ class Menu:
                 return 2 #send back the code to play the game
             elif self.optionsRect.collidepoint(event.pos):
                 return 3
+            
                     
