@@ -143,13 +143,13 @@ class BlockChunkControl:
         rand = random.Random()
         rand.seed(self.seed)
         
-        self.generateNoise (rand)
-        noisea = self.noise
+        self.generateNoise (rand,1)
+        noisea = self.noisea
         
         rand = random.Random()
         rand.seed(self.seed + 5)
-        self.generateNoise (rand)
-        noiseb = self.noise
+        self.generateNoise (rand,2)
+        noiseb = self.noiseb
 
         for i in range(len(blocks)):
             x = i%self.dimensions[0]
@@ -165,7 +165,7 @@ class BlockChunkControl:
                 
         self.blocks = blocks
                 
-    def generateNoise(self, rand):
+    def generateNoise(self, rand, id):
         array = [0] * self.getDimensions()[0]
         direction = 0
         firstBlock = 0
@@ -176,34 +176,34 @@ class BlockChunkControl:
             firstBlock = 0
             direction = 1
         elif(self.getNeighborChunk(1) == None and not self.getNeighborChunk(0) == None):
-            firstBlock = self.getNeighborChunk(0).getNoise()[0]
+            firstBlock = self.getNeighborChunk(0).getNoise(id)[0]
             direction = -1
             inOtherChunk = True
         elif(self.getNeighborChunk(0) == None and not self.getNeighborChunk(1) == None):
-            firstBlock = self.getNeighborChunk(1).getNoise()[-1]
+            firstBlock = self.getNeighborChunk(1).getNoise(id)[-1]
             direction = 1
             inOtherChunk = True
         
         for i in range(len(array)):
             if(direction == 1):
                 if(inOtherChunk and i == 0):
-                    if(self.getNeighborChunk(1).getNoise()[-2] > self.getNeighborChunk(1).getNoise()[-1]):
+                    if(self.getNeighborChunk(1).getNoise(id)[-2] > self.getNeighborChunk(1).getNoise(id)[-1]):
                         #Going up
-                        array[i] = self.getNeighborChunk(1).getNoise()[-1]+rand.randint(-1, 2)
-                    elif(self.getNeighborChunk(1).getNoise()[-2] < self.getNeighborChunk(1).getNoise()[-1]):
+                        array[i] = self.getNeighborChunk(1).getNoise(id)[-1]+rand.randint(-1, 2)
+                    elif(self.getNeighborChunk(1).getNoise(id)[-2] < self.getNeighborChunk(1).getNoise(id)[-1]):
                         #Going down
-                        array[i] = self.getNeighborChunk(1).getNoise()[-1]+rand.randint(-2, 1)
-                    elif(self.getNeighborChunk(1).getNoise()[-2] == self.getNeighborChunk(1).getNoise()[-1]):
+                        array[i] = self.getNeighborChunk(1).getNoise(id)[-1]+rand.randint(-2, 1)
+                    elif(self.getNeighborChunk(1).getNoise(id)[-2] == self.getNeighborChunk(1).getNoise(id)[-1]):
                         #Flat
-                        array[i] = self.getNeighborChunk(1).getNoise()[-1]+rand.randint(-1, 1)
+                        array[i] = self.getNeighborChunk(1).getNoise(id)[-1]+rand.randint(-1, 1)
                 elif(inOtherChunk and i == 1):
-                    if(self.getNeighborChunk(1).getNoise()[-1] > array[0]):
+                    if(self.getNeighborChunk(1).getNoise(id)[-1] > array[0]):
                         #Going up
                         array[i] = array[0]+rand.randint(-1, 2)
-                    elif(self.getNeighborChunk(1).getNoise()[-1] < array[0]):
+                    elif(self.getNeighborChunk(1).getNoise(id)[-1] < array[0]):
                         #Going down
                         array[i] = array[0]+rand.randint(-2, 1)
-                    elif(self.getNeighborChunk(1).getNoise()[-1] == array[0]):
+                    elif(self.getNeighborChunk(1).getNoise(id)[-1] == array[0]):
                         #Flat
                         array[i] = array[0]+rand.randint(-1, 1)
                 else:
@@ -218,23 +218,23 @@ class BlockChunkControl:
                         array[i] = array[i-1]+rand.randint(-1, 1)
             else:
                 if(inOtherChunk and i == 0):
-                    if(self.getNeighborChunk(1).getNoise()[1] > self.getNeighborChunk(1).getNoise()[0]):
+                    if(self.getNeighborChunk(1).getNoise(id)[1] > self.getNeighborChunk(1).getNoise(id)[0]):
                         #Going up
-                        array[len(array)-1-i] = self.getNeighborChunk(1).getNoise()[0]+rand.randint(-1, 2)
-                    elif(self.getNeighborChunk(1).getNoise()[1] < self.getNeighborChunk(1).getNoise()[0]):
+                        array[len(array)-1-i] = self.getNeighborChunk(1).getNoise(id)[0]+rand.randint(-1, 2)
+                    elif(self.getNeighborChunk(1).getNoise(id)[1] < self.getNeighborChunk(1).getNoise(id)[0]):
                         #Going down
-                        array[len(array)-1-i] = self.getNeighborChunk(1).getNoise()[0]+rand.randint(-2, 1)
-                    elif(self.getNeighborChunk(1).getNoise()[1] == self.getNeighborChunk(1).getNoise()[0]):
+                        array[len(array)-1-i] = self.getNeighborChunk(1).getNoise(id)[0]+rand.randint(-2, 1)
+                    elif(self.getNeighborChunk(1).getNoise(id)[1] == self.getNeighborChunk(1).getNoise(id)[0]):
                         #Flat
-                        array[len(array)-1-i] = self.getNeighborChunk(1).getNoise()[0]+rand.randint(-1, 1)
+                        array[len(array)-1-i] = self.getNeighborChunk(1).getNoise(id)[0]+rand.randint(-1, 1)
                 elif(inOtherChunk and i == 1):
-                    if(self.getNeighborChunk(1).getNoise()[0] > array[len(array)-1- 0]):
+                    if(self.getNeighborChunk(1).getNoise(id)[0] > array[len(array)-1- 0]):
                         #Going up
                         array[len(array)-1-i] = array[len(array)-1- 0]+rand.randint(-1, 2)
-                    elif(self.getNeighborChunk(1).getNoise()[0] < array[len(array)-1- 0]):
+                    elif(self.getNeighborChunk(1).getNoise(id)[0] < array[len(array)-1- 0]):
                         #Going down
                         array[len(array)-1-i] = array[len(array)-1- 0]+rand.randint(-2, 1)
-                    elif(self.getNeighborChunk(1).getNoise()[0] == array[len(array)-1- 0]):
+                    elif(self.getNeighborChunk(1).getNoise(id)[0] == array[len(array)-1- 0]):
                         #Flat
                         array[len(array)-1-i] = array[len(array)-1- 0]+rand.randint(-1, 1)
                 else:
@@ -247,12 +247,16 @@ class BlockChunkControl:
                     elif(array[len(array)-1- i-2] == array[len(array)-1- i-1]):
                         #Flat
                         array[len(array)-1-i] = array[len(array)-1- i-1]+rand.randint(-1, 1)
-                
-            
-        self.noise = array
-    
-    def getNoise(self):
-        return self.noise
+        if id == 1:
+            self.noisea = array
+        elif id == 2:
+            self.noiseb = array
+
+    def getNoise(self, id):
+        if id == 1:
+            return self.noisea
+        elif id == 2:
+            return self.noiseb
         
     def setPosInArray(self, pos):
         self.posInArray = pos
