@@ -1,14 +1,18 @@
 import pygame, sys, os, gametime, imput
 from Generators.BlockControl import *
 from Renderers.Entity import *
+from Renderers.Block import *
+from blockmanagers.Inventory import *
+from blockmanagers.Crafting import *
 
 #As part of a required Enrichment Center protocol,
 #the previous statement that we would not monitor
 #the test area was a complete fabrication.
-#We will stop enhancing the truth in three. two. *zzzt* 
+#We will stop enhancing the truth in three. two. *zzzt*
+ 
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
-flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
+flags = pygame.NOFRAME|pygame.FULLSCREEN
 imput = imput.imputhandler
 
 display = pygame.display
@@ -16,7 +20,6 @@ screen = None
 clock = pygame.time.Clock()
 fps = 60
 
-color = (125,206,250)
 world = BlockTerrainControl(pygame, "World", 0)
 time = gametime.timemanager(fps)
 offset = [0,0]
@@ -35,13 +38,14 @@ def main():
     spawnPlayer()
     while playing:
         draw()
-        keyCheck()
-        clock.tick(fps)
+        gameinput()
+        clock.tick()
 
 def spawnPlayer():
     global offset, playerPos
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
+    playerinventory = storeinventory(36)
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
 
 def draw():
@@ -51,8 +55,8 @@ def draw():
     world.draw(screen, offset, resolution)
             
                 # Array Entry = file, position
-#     for n in range(0, len(Entity.ObjectArray)):
-#         screen.blit(Entity.ObjectArray[n][0], Entity.ObjectArray[n][1])
+#    for n in range(0, len(entityMangager.ObjectArray)):
+#        screen.blit(entityMangagerObjectArray[n][0], entityMangager.ObjectArray[n][1])
 #                 # Array Entry = file, position
 #     for n in range(0, len(Menu.ObjectArray)):
 #         screen.blit(Menu.ObjectArray[n][0], Menu.ObjectArray[n][1])
@@ -60,7 +64,7 @@ def draw():
                 
     display.flip()
 
-def keyCheck():
+def gameinput():
     global offset
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:

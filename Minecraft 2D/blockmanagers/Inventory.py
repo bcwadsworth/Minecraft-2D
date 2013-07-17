@@ -13,6 +13,6 @@ class storeinventory():
         self.inventoryarray[slot] = [item, amount]
     def addslotitem (self,slot,amount):
         self.inventoryarray[slot][1] += amount
-    def removeslotitem (self):
+    def removeslotitem (self,slot):
         self.inventoryarray[slot] == [0,0]
         
