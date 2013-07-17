@@ -163,17 +163,17 @@ class BlockChunkControl:
         amtTimes = 1
         moveFactor = 16
         
-        while currNumerator > 1:
-            lastBlock = 0
-            for i in range(amtTimes):
-                div = currNumerator/2
-                array[lastBlock+div] = rand.randint(array[lastBlock]-moveFactor, array[lastBlock+(2*div)-1]+moveFactor)
-                lastBlock = lastBlock+currNumerator
-                
-            currNumerator /= 2
-            amtTimes = len(array)/currNumerator
-            if(moveFactor%2 == 0 and moveFactor > 1):
-                moveFactor /= 2
+#         while currNumerator > 1:
+#             lastBlock = 0
+#             for i in range(amtTimes):
+#                 div = currNumerator/2
+#                 array[lastBlock+div] = rand.randint(array[lastBlock]-moveFactor, array[lastBlock+(2*div)-1]+moveFactor)
+#                 lastBlock = lastBlock+currNumerator
+#                 
+#             currNumerator /= 2
+#             amtTimes = len(array)/currNumerator
+#             if(moveFactor%2 == 0 and moveFactor > 1):
+#                 moveFactor /= 2
             
         return array
         
