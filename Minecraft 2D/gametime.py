@@ -13,10 +13,9 @@ class timemanager(object):
         self.color = (0,100,200)
         self.hour = 8
     def tick(self):
-        if self.framerate*60 == self.counter:
-            #StopTheif
+        if self.framerate == self.counter:
             self.counter = 0
-            self.hour += 1
+            self.hour += 0.1
         if self.hour == 24:
             self.hour = 0
         self.counter += 1
