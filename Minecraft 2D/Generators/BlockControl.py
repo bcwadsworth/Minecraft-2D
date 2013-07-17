@@ -152,8 +152,10 @@ class BlockChunkControl:
             y = i/self.dimensions[0]
             if(noise[x] == 256-y-64):
                 blocks[i] = self.blocksManager.getBlockById(2)
-            elif(noise[x] > 256-y-64):
+            elif(noise[x] > 256-y-64 and noise[x] < 256-y-50):
                 blocks[i] = self.blocksManager.getBlockById(3)
+            elif(noise[x] >= 256-y-50):
+                blocks[i] = self.blocksManager.getBlockById(1)
             elif(noise[x] < 256-y-64):
                 blocks[i] = self.blocksManager.getBlockById(0)
                 
