@@ -3,7 +3,7 @@ Created on Jul 15, 2013
 
 @author: python09
 '''
-class storeinventory():
+class storeinventory:
     def __init__ (self,slots):
         self.inventoryarray = []
         self.slots = slots
