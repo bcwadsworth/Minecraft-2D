@@ -22,6 +22,7 @@ class Menu:
     height = None # height of the screen
     
     def __init__(self, surface, width, height):
+        pygame.init()
         self.playButton = pygame.image.load('assets/GUI/playButton.png')
         self.optionsButton = pygame.image.load('assets/GUI/optionsButton.png')
         self.quitButton = pygame.image.load('assets/GUI/quitButton.png')        
