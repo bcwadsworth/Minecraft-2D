@@ -2,8 +2,8 @@ import pygame, sys, os, gametime, imput
 from Generators.BlockControl import *
 from Renderers.Entity import *
 from Renderers.Block import *
-#from blockmanagers.Inventory import *
-#from blockmanagers.Crafting import *
+from blockmanagers.Inventory import *
+from blockmanagers.Crafting import *
 from Renderers.Menu import *
 
 #As part of a required Enrichment Center protocol,
@@ -54,7 +54,7 @@ def spawnPlayer():
     global offset, playerPos
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
-    #playerinventory = storeinventory(36)
+    playerinventory = storeinventory(36)
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
 
 def draw():
