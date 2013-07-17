@@ -154,19 +154,19 @@ class BlockChunkControl:
         for i in range(len(blocks)):
             x = i%self.dimensions[0]
             y = i/self.dimensions[0]
-            if(noisea[x] == self.getDimensions()[1]-y-64):
-                if noisea[x] < noiseb[x]:
-                    blocks[i] = self.blocksManager.getBlockById(1)
+            if(noiseb[x] >= self.getDimensions()[1]-y-56):
+                if random.randrange(1,51) == 1:
+                    blocks[i] = self.blocksManager.getBlockById(15)
+                elif random.randrange(1,31) == 1:
+                    blocks[i] = self.blocksManager.getBlockById(16)
                 else:
-                    blocks[i] = self.blocksManager.getBlockById(2)
+                    blocks[i] = self.blocksManager.getBlockById(1)
+            elif(noisea[x] == self.getDimensions()[1]-y-64):
+                blocks[i] = self.blocksManager.getBlockById(2)
             elif(noisea[x] > self.getDimensions()[1]-y-64 and noiseb[x] < 256-y-56):
                 blocks[i] = self.blocksManager.getBlockById(3)
-            elif(noiseb[x] >= self.getDimensions()[1]-y-56):
-                blocks[i] = self.blocksManager.getBlockById(1)
             elif(noiseb[x] < self.getDimensions()[1]-y-2):
                 blocks[i] = self.blocksManager.getBlockById(0)
-            else:
-                blocks[i] = self.blocksManager.getBlockById(7)
                 
         self.blocks = blocks
                 
