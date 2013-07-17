@@ -31,7 +31,7 @@ def main():
     os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % ((pygame.display.Info().current_w/2)-winx, (pygame.display.Info().current_h/2)-winy)
     pygame.display.set_caption('Minecraft 2D')
     screen = display.set_mode((resolution), flags)
-    mainMenu = Menu(screen)
+    mainMenu = Menu(screen, width, height)
     
     # the game play loop
     playing = True
@@ -49,12 +49,11 @@ def spawnPlayer():
 
 def draw():
     screen.fill(color)
-    '''
+    
     if menu:
         mainMenu.draw()
     else:
-        world.draw(screen, offset, resolution)'''
-    world.draw(screen, offset, resolution)
+        world.draw(screen, offset, resolution)    
             
                 # Array Entry = file, position
 #     for n in range(0, len(Entity.ObjectArray)):
@@ -68,17 +67,21 @@ def draw():
 
 #gets the key pressed events [for during the game?]
 def keyCheck():
+    global menu
+    
     global offset
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 quitGame()
         elif event.type == pygame.QUIT:
-            quitGame()
-    '''
-    if menu:
-        if mainMenu.getEvents() == 0:
-            quitGame()'''
+            quitGame()    
+        if menu:
+            request = mainMenu.getEvents(event)
+            if request == 1:
+                quitGame()
+            elif request == 2:
+                menu = False
     
     pressed = pygame.key.get_pressed()
     
