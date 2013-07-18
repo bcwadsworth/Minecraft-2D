@@ -5,6 +5,7 @@ from Renderers.Block import *
 from Blockmanagers.Inventory import *
 from Blockmanagers.Crafting import *
 from Renderers.Menu import *
+#from Blockmanagers.steven import *
 
 #As part of a required Enrichment Center protocol,
 #the previous statement that we would not monitor
@@ -59,6 +60,8 @@ def spawnPlayer():
     assert isinstance(chunk, BlockChunkControl)
     playerInventory = storeinventory(36, width, height)
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
+    #setscreen(screen, width)
+    
 
 def draw():
     screen.fill(time.color)
@@ -72,6 +75,8 @@ def draw():
         
     time.tick()                
     display.flip()
+    #position(0,0)
+    #step(0)
 
 # gets the input for the game
 def gameinput():
