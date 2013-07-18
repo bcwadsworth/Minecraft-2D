@@ -222,7 +222,7 @@ class BlockChunkControl:
                             eastAir = True
                         
                     if(self.getNeighborBlock(i, 3)[1] == 1):
-                        if(self.getNeighborChunk(0).getBlocks()[self.getNeighborBlock(i, 3)[0]].getId() == 0):
+                        if(self.getNeighborChunk(1).getBlocks()[self.getNeighborBlock(i, 3)[0]].getId() == 0):
                             westAir = True
                     else:
                         if(self.blocks[self.getNeighborBlock(i, 3)[0]].getId() == 0):
@@ -377,9 +377,9 @@ class BlockChunkControl:
             if((block - 1) % self.getDimensions()[1] < block % self.getDimensions()[1]):
                 return block - 1, 0, direction
             else:
-                neighborChunk = self.getNeighborChunk(0)
+                neighborChunk = self.getNeighborChunk(1)
                 if(not neighborChunk == None):
-                    return block + (self.getDimensions()[1] - (block % self.getDimensions()[1])), 1, direction
+                    return block + (self.getDimensions()[0] - (block % self.getDimensions()[0])), 1, direction
                 else:
                     return None
                     
@@ -434,6 +434,7 @@ class Digger:
             if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 2))[0].getId() == 0):
                 available += chunk.getNeighborBlock(self.block[2], 2),
         if(not chunk.getNeighborBlock(self.block[2], 3) == None):
+            print chunk.getNeighborBlock(self.block[2], 3), self.block[2]
             if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 3))[0].getId() == 0):
                 available += chunk.getNeighborBlock(self.block[2], 3),
             
