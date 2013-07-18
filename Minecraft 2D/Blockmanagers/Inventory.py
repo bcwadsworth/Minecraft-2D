@@ -4,6 +4,7 @@ Created on Jul 15, 2013
 @author: python09
 '''
 import pygame
+import pdb
 
 class storeinventory:
     slots = None
@@ -37,7 +38,8 @@ class storeinventory:
         self.inventoryRect.y = (height - self.picHeight)/2
         
         #create the area to draw the player
-        self.playerRect = pygame.Rect(width/7, height/33, (width*7/3)-(width/7), (height*78/165)-(height/33))
+        self.playerRect = pygame.Rect(self.inventoryRect.width/7 + self.inventoryRect.x, self.inventoryRect.height/33 + self.inventoryRect.y, (self.inventoryRect.width*80/175)-(self.inventoryRect.width/7), 
+                                      (self.inventoryRect.height*78/165)-(self.inventoryRect.height/33))
         
         #set up the slots
         for n in range(0,slots):

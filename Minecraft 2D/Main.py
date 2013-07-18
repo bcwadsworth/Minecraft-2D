@@ -58,7 +58,6 @@ def spawnPlayer():
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
     playerInventory = storeinventory(36, width, height)
-    #playerInventory.setPlayerPic(pygame.image.load('assets/GUI/playButton.png'))
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
 
 def draw():
