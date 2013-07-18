@@ -309,6 +309,13 @@ class BlockChunkControl:
     def getBlocks(self):
         return self.blocks
     
+    def getAbsBlock(self, blockArray):
+        if(blockArray[1] == 1): #In another chunk
+            if(blockArray[2] == 1): #East direction
+                pass
+            if(blockArray[2] == 3): #West direction
+                pass
+    
     def getDimensions(self):
         return self.dimensions
     
@@ -331,25 +338,25 @@ class BlockChunkControl:
     
     def getNeighborBlock(self, block, direction):
         if(direction == 0): #North
-            return block - self.getDimensions()[0], 0
+            return block - self.getDimensions()[0], 0, direction
         if(direction == 1): #East
             if((block + 1) % self.getDimensions()[1] > block % self.getDimensions()[1]):
-                return block + 1, 0
+                return block + 1, 0, direction
             else:
                 neighborChunk = self.getNeighborChunk(0)
                 if(not neighborChunk == None):
-                    return block - (block % self.getDimensions()[1]), 1
+                    return block - (block % self.getDimensions()[1]), 1, direction
                 else:
                     return None
         if(direction == 2): #South
-            return block + self.getDimensions()[0], 0
+            return block + self.getDimensions()[0], 0, direction
         if(direction == 3): #West
             if((block - 1) % self.getDimensions()[1] < block % self.getDimensions()[1]):
-                return block - 1, 0
+                return block - 1, 0, direction
             else:
                 neighborChunk = self.getNeighborChunk(0)
                 if(not neighborChunk == None):
-                    return block + (self.getDimensions()[1] - (block % self.getDimensions()[1])), 1
+                    return block + (self.getDimensions()[1] - (block % self.getDimensions()[1])), 1, direction
                 else:
                     return None
                     
@@ -365,4 +372,26 @@ class BlockChunkControl:
             else:
                 return self.terrainControl.getChunks()[self.posInArray - 1]
         
-        
+class Digger:
+    
+    block = None
+    chunk = None
+    active = None
+    
+    def __init__(self, block, chunk):
+        self.block = block
+        self.chunk = chunk
+        self.active = True
+    
+    def dig(self):
+        chunk = self.chunk
+        assert isinstance(chunk, BlockChunkControl)
+        available = []
+        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 0)[0]].getId() == 0):
+            available += chunk.getNeighborBlock(self.block, 0)[0]
+        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 1)[0]].getId() == 0):
+            available += chunk.getNeighborBlock(self.block, 1)[0]
+        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 2)[0]].getId() == 0):
+            available += chunk.getNeighborBlock(self.block, 2)[0]
+        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 3)[0]].getId() == 0):
+            available += chunk.getNeighborBlock(self.block, 3)[0]
