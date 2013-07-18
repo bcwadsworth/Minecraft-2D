@@ -165,6 +165,12 @@ class BlockChunkControl:
                 self.blocks[i] = self.blocksManager.getBlockById(3)
             elif(noiseb[x] < self.getDimensions()[1]-y-2):
                 self.blocks[i] = self.blocksManager.getBlockById(0)
+            if(y == self.dimensions[1]-2):
+                r = rand.randint(0,10)
+                if(r > 3):
+                    self.blocks[i] = self.blocksManager.getBlockById(7)
+            if(y == self.dimensions[1]-1):
+                self.blocks[i] = self.blocksManager.getBlockById(7)
                 
                 #self.getNeighborChunk(0)
                 
