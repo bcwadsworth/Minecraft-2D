@@ -22,6 +22,7 @@ clock = pygame.time.Clock()
 fps = 60
 
 menu = True
+showInventory = False # whether to show the inventory or not
 mainMenu = None
 
 color = (125,206,250)
@@ -30,6 +31,7 @@ world = BlockTerrainControl(pygame, "World", 0)
 time = gametime.timemanager(fps)
 offset = [0,0]
 
+playerInventory = None
 playing = False
 
 def main():
@@ -51,10 +53,11 @@ def main():
         clock.tick()
 
 def spawnPlayer():
-    global offset, playerPos
+    global offset, playerPos, playerInventory
+    
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
-    playerinventory = storeinventory(36)
+    playerInventory = storeinventory(36, width, height)
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
 
 def draw():
@@ -64,6 +67,8 @@ def draw():
         mainMenu.draw()
     else:
         world.draw(screen, offset, resolution)
+        if showInventory:
+            playerInventory.draw(screen)
         
     time.tick()                
     display.flip()
@@ -72,11 +77,14 @@ def draw():
 def gameinput():
     global offset
     global menu
+    global showInventory
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 quitGame()
+            if event.key == pygame.K_i:
+                showInventory = not showInventory
         elif event.type == pygame.QUIT:
             quitGame()    
         if menu:
