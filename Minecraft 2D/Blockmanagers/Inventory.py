@@ -27,8 +27,8 @@ class storeinventory:
         # set up the screen dimensions
         self.screenWidth = width
         self.screenHeight = height
-        self.picWidth = self.screenWidth/2
-        self.picHeight = self.screenHeight * 4/5
+        self.picWidth = 176*2
+        self.picHeight = 167*2
         
         #create the images
         tempPic = pygame.image.load('assets/mcgui/container/inventoryEdit.png')

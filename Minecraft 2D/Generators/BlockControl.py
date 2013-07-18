@@ -155,7 +155,9 @@ class BlockChunkControl:
             x = i%self.dimensions[0]
             y = i/self.dimensions[0]
             if(noiseb[x] >= self.getDimensions()[1]-y-56):
-                if random.randrange(1,151) == 1 and y > 256-16:
+                if random.randrange(1,11) == 1 and y > 256-11:
+                        self.blocks[i] = self.blocksManager.getBlockById(12)
+                elif random.randrange(1,151) == 1 and y > 256-16:
                     self.blocks[i] = self.blocksManager.getBlockById(18)
                 elif random.randrange(1,151) == 1 and y > 256-16:
                     self.blocks[i] = self.blocksManager.getBlockById(17)
