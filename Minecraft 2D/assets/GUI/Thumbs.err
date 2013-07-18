@@ -1,0 +1,32 @@
+/COM,ANSYS RELEASE 14.5    UP20120918       11:18:01    07/18/2013
+
+ *** ERROR ***                           CP =       0.952   TIME= 11:18:02
+ Data file \\chips.eng.utah.edu\home\python05\.win_desktop\Repository\Min
+ ecraft-2D\Minecraft 2D\assets\GUI\Thumbs.db has incorrect format, is    
+ missing READ/WRITE permission, or is empty for RESUME.                  
+
+ *** WARNING ***                         CP =       0.952   TIME= 11:18:02
+ WHILE PROCESSING FILE BASED INPUT (/INPUT OR MACRO) AN ERROR HAS        
+ OCCURRED.  SHOULD INPUT PROCESSING BE SUSPENDED?                        
+
+ *** WARNING ***                         CP =       0.952   TIME= 11:18:36
+ YES is not a recognized BEGIN command, abbreviation, or macro.  This    
+ command will be ignored.                                                
+
+ *** ERROR ***                           CP =       0.952   TIME= 11:18:53
+ The program is unable to open file Thumbs.db.  If the suggestions in    
+ the associated error messages immediately preceding and/or following    
+ this error message do not help resolve the file issue, please send the  
+ data leading to this operation to your technical support provider,      
+ along with the system error code of 999, for help in determining the    
+ possible reasons as to why this file could not be opened.               
+
+ *** ERROR ***                           CP =       0.952   TIME= 11:18:53
+ The program is unable to open file Thumbs.db.  Unit 16 is already in    
+ use.  Please send the data leading to this operation to your technical  
+ support provider, as this will allow ANSYS, Inc to improve the          
+ program.                                                                
+
+ *** ERROR ***                           CP =       0.952   TIME= 11:18:53
+ Database file Thumbs.db exists but does not have READ/WRITE permission, 
+ so it cannot be overwritten.                                            

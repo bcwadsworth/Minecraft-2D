@@ -141,6 +141,8 @@ class BlockChunkControl:
         rand = random.Random()
         rand.seed(self.seed)
         
+        #---------------NOISE---------------
+        
         self.generateNoise (rand,1)
         noisea = self.noisea
         
@@ -190,7 +192,22 @@ class BlockChunkControl:
             if(y == self.dimensions[1]-1):
                 self.blocks[i] = self.blocksManager.getBlockById(7)
                 
-                #self.getNeighborChunk(0)
+        #--------------------DIGGERS (MINE GENERATION)----------------
+        
+        digArray = []
+        digArray += Digger((self.getBlocks()[self.convertFromCoords((self.getDimensions()[0]/2,self.getDimensions()[1]-1-32))], self, self.convertFromCoords((self.getDimensions()[0]/2,self.getDimensions()[1]-1-32))), rand, digArray, 0),
+        
+        someoneIsAlive = True
+        
+        while(someoneIsAlive):
+            someoneIsAlive = False
+            for i in range(len(digArray)):
+                if(digArray[i].isActive()):
+                    someoneIsAlive = True
+                    digArray[i].dig()
+                            
+                
+        #--------------------SMOOTHING----------------------
                 
         for i in range(len(self.blocks)):
             x = i%self.dimensions[0]
@@ -207,7 +224,7 @@ class BlockChunkControl:
                             eastAir = True
                         
                     if(self.getNeighborBlock(i, 3)[1] == 1):
-                        if(self.getNeighborChunk(0).getBlocks()[self.getNeighborBlock(i, 3)[0]].getId() == 0):
+                        if(self.getNeighborChunk(1).getBlocks()[self.getNeighborBlock(i, 3)[0]].getId() == 0):
                             westAir = True
                     else:
                         if(self.blocks[self.getNeighborBlock(i, 3)[0]].getId() == 0):
@@ -314,9 +331,11 @@ class BlockChunkControl:
     def getAbsBlock(self, blockArray):
         if(blockArray[1] == 1): #In another chunk
             if(blockArray[2] == 1): #East direction
-                pass
-            if(blockArray[2] == 3): #West direction
-                pass
+                return self.getNeighborChunk(0).getBlocks()[blockArray[0]], self.getNeighborChunk(0), blockArray[0]
+            elif(blockArray[2] == 3): #West direction
+                return self.getNeighborChunk(1).getBlocks()[blockArray[0]], self.getNeighborChunk(1), blockArray[0]
+        elif(blockArray[1] == 0): #In same chunk
+            return self.getBlocks()[blockArray[0]], self, blockArray[0]
     
     def getDimensions(self):
         return self.dimensions
@@ -340,6 +359,8 @@ class BlockChunkControl:
     
     def getNeighborBlock(self, block, direction):
         if(direction == 0): #North
+            if (block - self.getDimensions()[0]) < (self.getDimensions()[0]*self.getDimensions()[1])-1:
+                return None
             return block - self.getDimensions()[0], 0, direction
         if(direction == 1): #East
             if((block + 1) % self.getDimensions()[1] > block % self.getDimensions()[1]):
@@ -351,14 +372,16 @@ class BlockChunkControl:
                 else:
                     return None
         if(direction == 2): #South
+            if (block + self.getDimensions()[0]) > (self.getDimensions()[0]*self.getDimensions()[1])-1:
+                return None
             return block + self.getDimensions()[0], 0, direction
         if(direction == 3): #West
             if((block - 1) % self.getDimensions()[1] < block % self.getDimensions()[1]):
                 return block - 1, 0, direction
             else:
-                neighborChunk = self.getNeighborChunk(0)
+                neighborChunk = self.getNeighborChunk(1)
                 if(not neighborChunk == None):
-                    return block + (self.getDimensions()[1] - (block % self.getDimensions()[1])), 1, direction
+                    return block + (self.getDimensions()[0] - (block % self.getDimensions()[0])), 1, direction
                 else:
                     return None
                     
@@ -374,26 +397,111 @@ class BlockChunkControl:
             else:
                 return self.terrainControl.getChunks()[self.posInArray - 1]
         
+    def getBlockManager(self):
+        return self.blocksManager
+        
 class Digger:
     
     block = None
-    chunk = None
     active = None
+    rand = None
+    digArray = None
+    did = None
     
-    def __init__(self, block, chunk):
+    def __init__(self, block, rand, array, did):
         self.block = block
-        self.chunk = chunk
         self.active = True
+        self.rand = rand
+        self.digArray = array
+        self.did = did
+    
+    def getId(self):
+        return self.did
     
     def dig(self):
-        chunk = self.chunk
+        chunk = self.block[1]
         assert isinstance(chunk, BlockChunkControl)
         available = []
-        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 0)[0]].getId() == 0):
-            available += chunk.getNeighborBlock(self.block, 0)[0]
-        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 1)[0]].getId() == 0):
-            available += chunk.getNeighborBlock(self.block, 1)[0]
-        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 2)[0]].getId() == 0):
-            available += chunk.getNeighborBlock(self.block, 2)[0]
-        if(not chunk.getBlocks()[chunk.getNeighborBlock(self.block, 3)[0]].getId() == 0):
-            available += chunk.getNeighborBlock(self.block, 3)[0]
+        chosen = None
+        
+        print chunk.convertToCoords(self.block[2])
+        
+        if(not chunk.getNeighborBlock(self.block[2], 0) == None):
+            if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 0))[0].getId() == 0):
+                available += chunk.getNeighborBlock(self.block[2], 0),
+        if(not chunk.getNeighborBlock(self.block[2], 1) == None):
+            if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 1))[0].getId() == 0):
+                available += chunk.getNeighborBlock(self.block[2], 1),
+        if(not chunk.getNeighborBlock(self.block[2], 2) == None):
+            if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 2))[0].getId() == 0):
+                available += chunk.getNeighborBlock(self.block[2], 2),
+        if(not chunk.getNeighborBlock(self.block[2], 3) == None):
+            print chunk.getNeighborBlock(self.block[2], 3), self.block[2]
+            if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 3))[0].getId() == 0):
+                available += chunk.getNeighborBlock(self.block[2], 3),
+            
+        if(len(available) > 0):
+            chosen = available[self.rand.randint(0, len(available)-1)]
+        else:
+#             someoneIsAlive = False
+#             for i in self.digArray:
+#                 if(i.isActive() and not i.getId() == self.did):
+#                     someoneIsAlive = True
+#                     print "Someone is alive!"
+            self.active = False
+            return
+#             if(someoneIsAlive):
+#                 self.active = False
+#                 return
+#             else:
+#                 print "Nobody is alive. Searching.."
+#                 while(len(available) == 0):
+#                     print "Still 0..."
+#                     
+#                     for i in range(4):
+#                         if(not chunk.getNeighborBlock(self.block[2], i) == None):
+#                             print "Current location: "+str(chunk.convertToCoords(self.block[2]))
+#                             if(not chunk.getNeighborBlock(self.block[2], i) == None):
+#                                 if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], i))[0].getId() == 0):
+#                                     available += chunk.getNeighborBlock(self.block[2], i),
+#                                 
+#                     r = self.rand.randint(0,3)
+#                     print r
+#                     while(chunk.getNeighborBlock(self.block[2], r) == None):
+#                         r = self.rand.randint(0,3)
+#                     self.block = chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], r))
+#                 print "Done searching. Validating..."
+#                 while(chunk.getNeighborBlock(self.block[2], r) == None):
+#                     r = self.rand.randint(0,3)
+#                 self.block = chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], r))
+#                 chosen = available[self.rand.randint(0, len(available)-1)]
+#                 print "Validated"
+        
+        availableS = []
+        
+        spawn = self.rand.randint(1, 100)
+        if(spawn <= 8):
+            if(not chunk.getNeighborBlock(self.block[2], 0) == None):
+                if(chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 0))[0].getId() == 0):
+                    availableS += chunk.getNeighborBlock(self.block[2], 0),
+            if(not chunk.getNeighborBlock(self.block[2], 1) == None):
+                if(chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 1))[0].getId() == 0):
+                    availableS += chunk.getNeighborBlock(self.block[2], 1),
+            if(not chunk.getNeighborBlock(self.block[2], 2) == None):
+                if(chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 2))[0].getId() == 0):
+                    availableS += chunk.getNeighborBlock(self.block[2], 2),
+            if(not chunk.getNeighborBlock(self.block[2], 3) == None):
+                if(chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 3))[0].getId() == 0):
+                    availableS += chunk.getNeighborBlock(self.block[2], 3),
+                
+        if(len(availableS) > 0):
+            spawnDig = availableS[self.rand.randint(0, len(availableS)-1)]
+            self.digArray += Digger(chunk.getAbsBlock(spawnDig), self.rand, self.digArray, len(self.digArray)),
+               
+        self.block = chunk.getAbsBlock(chosen)
+        otherChunk = chunk.getAbsBlock(chosen)[1]
+        otherChunk.getBlocks()[chunk.getAbsBlock(chosen)[2]-1] = chunk.getBlockManager().getBlockById(0)
+            
+    def isActive(self):
+        return self.active
+            
