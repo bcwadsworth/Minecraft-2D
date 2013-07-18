@@ -5,17 +5,22 @@ from Renderers.Block import *
 from Blockmanagers.Inventory import *
 from Blockmanagers.Crafting import *
 from Renderers.Menu import *
-#from Blockmanagers.steven import *
+from Blockmanagers.steven import *
 
 #As part of a required Enrichment Center protocol,
 #the previous statement that we would not monitor
 #the test area was a complete fabrication.
 #We will stop enhancing the truth in three. two. *zzzt*
+
  
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
 gameinput = input.inputhandler()
+
+stevenx = (width/2)-8
+steveny = height/2
+steven.setscreen(screen,width)
 
 display = pygame.display
 screen = None
@@ -125,6 +130,9 @@ def gameInput():
     elif gameinput.crouch:
         vdir = 1
     offset[1] += vdir * world.getBlockDimensions()[0]
+    
+    if gameinput.moveDir == 1
+        
 
 def quitGame():
     global playing
