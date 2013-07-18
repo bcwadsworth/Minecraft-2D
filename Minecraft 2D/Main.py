@@ -22,7 +22,7 @@ clock = pygame.time.Clock()
 fps = 60
 
 menu = True
-showInventory = False # whether to show the inventory or not
+showInventory = True # whether to show the inventory or not
 mainMenu = None
 
 color = (125,206,250)
@@ -58,6 +58,7 @@ def spawnPlayer():
     chunk = world.getChunks()[0]
     assert isinstance(chunk, BlockChunkControl)
     playerInventory = storeinventory(36, width, height)
+    #playerInventory.setPlayerPic(pygame.image.load('assets/GUI/playButton.png'))
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
 
 def draw():

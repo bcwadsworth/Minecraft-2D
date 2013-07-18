@@ -15,6 +15,9 @@ class storeinventory:
     screenHeight = 0
     
     playerRect = None
+    playerPic = None
+    playerX = 0
+    playerY = 0
     
     def __init__ (self,slots, width=500, height=500):
         self.inventoryarray = []
@@ -33,18 +36,17 @@ class storeinventory:
         self.inventoryRect.x = (width - self.picWidth)/2
         self.inventoryRect.y = (height - self.picHeight)/2
         
-        '''#create the area to draw the player
-        self.playerRect = pygame.Rect(width/7, height/33, (width*7/3)-(width/7), (height*78/165)-(height/33))'''
+        #create the area to draw the player
+        self.playerRect = pygame.Rect(width/7, height/33, (width*7/3)-(width/7), (height*78/165)-(height/33))
         
         #set up the slots
         for n in range(0,slots):
             self.inventoryarray.append([0,0])
             
-    def draw(self, screen):
+    def draw(self, screen):        
         screen.blit(self.inventoryPic, (self.inventoryRect.x, self.inventoryRect.y))
-        '''if not self.playerPic == None:
-            screen.blit(self.playerPic, (self.playerRect.x + (self.playerRect.width-self.playerPic.get_rect().width)/2, 
-                                         self.playerRect.y + (self.playerRect.height-self.playerPic.get_rect().height)/2))'''
+        if not self.playerPic == None:         
+            screen.blit(self.playerPic, (self.playerX, self.playerY))
             
     def newSlotItem (self,slot,item,amount):
         self.inventoryarray[slot] = [item, amount]
@@ -55,7 +57,17 @@ class storeinventory:
     def removeSlotItem (self,slot):
         self.inventoryarray[slot] == [0,0]
         
-    '''def setPlayerPic(self, picture):
-        temp = picture
-        if picture'''
+    # set the picture to display of the player
+    def setPlayerPic(self, picture):
+        newWidth = picture.get_rect().width
+        newHeight = picture.get_rect().height
+        if picture.get_rect().width > self.playerRect.width:
+            newWidth = self.playerRect.width
+        if picture.get_rect().height > self.playerRect.height:
+            newHeight = self.playerRect.height
+        self.playerPic = pygame.transform.scale(picture, (newWidth, newHeight))
+        self.playerX = self.playerRect.x + ((self.playerRect.width-newWidth)/2)
+        self.playerY = self.playerRect.y + ((self.playerRect.height-newHeight)/2)
+        print(self.playerX)
+        print(self.playerY)
         

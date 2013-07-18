@@ -29,10 +29,10 @@ class BlocksManager:
         Block(14, Image(pygame.image.load("assets/blocks/gold_ore.png"), self.blocksDimensions, (0,0)), "Gold Ore"),
         Block(15, Image(pygame.image.load("assets/blocks/iron_ore.png"), self.blocksDimensions, (0,0)), "Iron Ore"),
         Block(16, Image(pygame.image.load("assets/blocks/coal_ore.png"), self.blocksDimensions, (0,0)), "Coal Ore"),
-        Block(17, Image(pygame.image.load("assets/blocks/gold_ore.png"), self.blocksDimensions, (0,0)), "Lapis Lazuli Ore"),
-        Block(18, Image(pygame.image.load("assets/blocks/lapis_ore.png"), self.blocksDimensions, (0,0)), "Diamond Ore"),
+        Block(17, Image(pygame.image.load("assets/blocks/lapis_ore.png"), self.blocksDimensions, (0,0)), "Lapis Lazuli Ore"),
+        Block(18, Image(pygame.image.load("assets/blocks/diamond_ore.png"), self.blocksDimensions, (0,0)), "Diamond Ore"),
         Block(19, Image(pygame.image.load("assets/blocks/emerald_ore.png"), self.blocksDimensions, (0,0)), "Emerald Ore"),
-        Block(19, Image(pygame.image.load("assets/blocks/redstone_ore.png"), self.blocksDimensions, (0,0)), "Redstone Ore")
+        Block(20, Image(pygame.image.load("assets/blocks/redstone_ore.png"), self.blocksDimensions, (0,0)), "Redstone Ore")
         )
         
     def getBlockByName(self, name):
