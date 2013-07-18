@@ -17,6 +17,7 @@ class inputhandler:
         self.mouseclickright = False
         self.mouseclickleft = False
         self.mousepos = (0,0)
+        self.quit = False
     def input(self):
         self.moveDir = 0
         self.invDir = 0
@@ -25,8 +26,7 @@ class inputhandler:
         self.inv = False
         self.drop = False
         self.menu = False
-        self.mouseclickright = False
-        self.mouseclickleft = False
+        self.mouseclick = False
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
@@ -37,11 +37,10 @@ class inputhandler:
                     self.drop = True
                 if event.key == pygame.K_e:
                     self.inv = True
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+            if event.type == pygame.QUIT:
+                self.quit = True
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
+                self.mouseclick = True
             if event.type == pygame.MOUSEMOTION:
                 self.mousepos = event.pos
         self.pressed = pygame.key.get_pressed()
@@ -49,9 +48,9 @@ class inputhandler:
             self.moveDir = -1
         elif(self.pressed[pygame.K_d]):
             self.moveDir = 1
-        if not self.jump == True and (self.pressed[pygame.K_d]):
-            self.crouch = True
-        if(self.pressed[pygame.K_d]):
+        if(self.pressed[pygame.K_w]):
+            self.jump = True
+        elif(self.pressed[pygame.K_s]):
             self.crouch = True
         if(self.pressed[pygame.K_z]):#inv dir- if possible mouse wheel?
             self.invDir = -1

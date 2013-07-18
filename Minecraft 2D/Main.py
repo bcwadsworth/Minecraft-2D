@@ -14,7 +14,7 @@ from Renderers.Menu import *
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
-imput = input.inputhandler
+gameinput = input.inputhandler()
 
 display = pygame.display
 screen = None
@@ -24,8 +24,6 @@ fps = 60
 menu = True
 showInventory = False # whether to show the inventory or not
 mainMenu = None
-
-color = (125,206,250)
 
 world = BlockTerrainControl(pygame, "World", 0)
 time = gametime.timemanager(fps)
@@ -48,8 +46,8 @@ def main():
     playing = True
     spawnPlayer()
     while playing:
+        gameInput()
         draw()
-        gameinput()
         clock.tick()
 
 def spawnPlayer():
@@ -74,11 +72,36 @@ def draw():
     display.flip()
 
 # gets the input for the game
-def gameinput():
+def gameInput():
     global offset
     global menu
     global showInventory
+<<<<<<< HEAD
+    menuReturn = 0
+    gameinput.input()
+    if gameinput.quit:
+        quitGame()
+    if gameinput.menu:
+        menu = True
+    if gameinput.mouseclick:
+        menuReturn = mainMenu.getReturns(gameinput.mousepos)
+    if menuReturn == 1:
+        quitGame()
+    elif menuReturn == 2:
+        menu = False
+    elif menuReturn == 3:
+        pass
+    elif gameinput.inv:
+        if showInventory:
+            showInventory = False
+        else:
+            showInventory = True
+=======
+>>>>>>> branch 'master' of https://github.com/bcwadsworth/Minecraft-2D.git
     
+<<<<<<< HEAD
+    vdir = 0
+=======
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
@@ -95,16 +118,15 @@ def gameinput():
                 menu = False
     
     pressed = pygame.key.get_pressed()
+>>>>>>> branch 'master' of https://github.com/bcwadsworth/Minecraft-2D.git
     
     #moves the viewpoint
-    if(pressed[pygame.K_w]):
-        offset[1] -= world.getBlockDimensions()[0]
-    if(pressed[pygame.K_s]):
-        offset[1] += world.getBlockDimensions()[0]
-    if(pressed[pygame.K_a]):
-        offset[0] -= world.getBlockDimensions()[0]
-    if(pressed[pygame.K_d]):
-        offset[0] += world.getBlockDimensions()[0]
+    offset[0] += gameinput.moveDir * world.getBlockDimensions()[0]
+    if gameinput.jump:
+        vdir = -1
+    elif gameinput.crouch:
+        vdir = 1
+    offset[1] += vdir * world.getBlockDimensions()[0]
 
 def quitGame():
     global playing

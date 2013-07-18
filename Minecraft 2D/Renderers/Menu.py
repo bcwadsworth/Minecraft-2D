@@ -81,14 +81,13 @@ class Menu:
         self.screen.blit(self.logo, (self.logoRect.x, self.logoRect.y))
         self.screen.blit(self.rotatedText, (self.snippitX, self.snippitY)) #show the image        
     
-    #the event handler
-    def getEvents(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:     
-            if self.quitRect.collidepoint(event.pos): # see if the quit button was clicked
-                return 1 # send back the code to quit
-            elif self.playRect.collidepoint(event.pos):
-                return 2 #send back the code to play the game
-            elif self.optionsRect.collidepoint(event.pos):
-                return 3
+    #the menu return handler
+    def getReturns(self, pos):     
+        if self.quitRect.collidepoint(pos): # see if the quit button was clicked
+            return 1 # send back the code to quit
+        elif self.playRect.collidepoint(pos):
+            return 2 #send back the code to play the game
+        elif self.optionsRect.collidepoint(pos):
+            return 3
             
                     
