@@ -362,6 +362,10 @@ class BlockChunkControl:
             if (block - self.getDimensions()[0]) < (self.getDimensions()[0]*self.getDimensions()[1])-1:
                 return None
             return block - self.getDimensions()[0], 0, direction
+        if(direction == 2): #South
+            if (block + self.getDimensions()[0]) > (self.getDimensions()[0]*self.getDimensions()[1])-1:
+                return None
+            return block + self.getDimensions()[0], 0, direction
         if(direction == 1): #East
             if((block + 1) % self.getDimensions()[1] > block % self.getDimensions()[1]):
                 return block + 1, 0, direction
@@ -371,10 +375,6 @@ class BlockChunkControl:
                     return block - (block % self.getDimensions()[1]), 1, direction
                 else:
                     return None
-        if(direction == 2): #South
-            if (block + self.getDimensions()[0]) > (self.getDimensions()[0]*self.getDimensions()[1])-1:
-                return None
-            return block + self.getDimensions()[0], 0, direction
         if(direction == 3): #West
             if((block - 1) % self.getDimensions()[1] < block % self.getDimensions()[1]):
                 return block - 1, 0, direction
@@ -424,8 +424,6 @@ class Digger:
         available = []
         chosen = None
         
-        print chunk.convertToCoords(self.block[2])
-        
         if(not chunk.getNeighborBlock(self.block[2], 0) == None):
             if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 0))[0].getId() == 0):
                 available += chunk.getNeighborBlock(self.block[2], 0),
@@ -436,7 +434,6 @@ class Digger:
             if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 2))[0].getId() == 0):
                 available += chunk.getNeighborBlock(self.block[2], 2),
         if(not chunk.getNeighborBlock(self.block[2], 3) == None):
-            print chunk.getNeighborBlock(self.block[2], 3), self.block[2]
             if(not chunk.getAbsBlock(chunk.getNeighborBlock(self.block[2], 3))[0].getId() == 0):
                 available += chunk.getNeighborBlock(self.block[2], 3),
             
