@@ -76,7 +76,6 @@ def gameInput():
     global offset
     global menu
     global showInventory
-<<<<<<< HEAD
     menuReturn = 0
     gameinput.input()
     if gameinput.quit:
@@ -96,12 +95,7 @@ def gameInput():
             showInventory = False
         else:
             showInventory = True
-=======
->>>>>>> branch 'master' of https://github.com/bcwadsworth/Minecraft-2D.git
-    
-<<<<<<< HEAD
     vdir = 0
-=======
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
@@ -118,8 +112,7 @@ def gameInput():
                 menu = False
     
     pressed = pygame.key.get_pressed()
->>>>>>> branch 'master' of https://github.com/bcwadsworth/Minecraft-2D.git
-    
+
     #moves the viewpoint
     offset[0] += gameinput.moveDir * world.getBlockDimensions()[0]
     if gameinput.jump:
