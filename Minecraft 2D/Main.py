@@ -1,4 +1,4 @@
-import pygame, sys, os, gametime, imput
+import pygame, sys, os, gametime, input
 from Generators.BlockControl import *
 from Renderers.Entity import *
 from Renderers.Block import *
@@ -14,7 +14,7 @@ from Renderers.Menu import *
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
-imput = imput.imputhandler
+imput = input.inputhandler
 
 display = pygame.display
 screen = None
@@ -65,16 +65,7 @@ def draw():
     else:
         world.draw(screen, offset, resolution)
         
-    time.tick()
-            
-                # Array Entry = file, position
-#    for n in range(0, len(entityMangager.ObjectArray)):
-#        screen.blit(entityMangagerObjectArray[n][0], entityMangager.ObjectArray[n][1])
-#                 # Array Entry = file, position
-#     for n in range(0, len(Menu.ObjectArray)):
-#         screen.blit(Menu.ObjectArray[n][0], Menu.ObjectArray[n][1])
-                # Array Entry = file, position
-                
+    time.tick()                
     display.flip()
 
 # gets the input for the game

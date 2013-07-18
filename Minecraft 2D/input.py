@@ -5,7 +5,7 @@ Created on Jul 16, 2013
 '''
 import pygame
 import sys
-class imputhandler:
+class inputhandler:
     def __init__(self):
         self.moveDir = 0
         self.invDir = 0
@@ -17,7 +17,7 @@ class imputhandler:
         self.mouseclickright = False
         self.mouseclickleft = False
         self.mousepos = (0,0)
-    def imput(self):
+    def input(self):
         self.moveDir = 0
         self.invDir = 0
         self.jump = False
