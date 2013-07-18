@@ -22,7 +22,7 @@ clock = pygame.time.Clock()
 fps = 60
 
 menu = True
-showInventory = True # whether to show the inventory or not
+showInventory = False # whether to show the inventory or not
 mainMenu = None
 
 color = (125,206,250)
