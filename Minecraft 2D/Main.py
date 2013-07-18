@@ -65,16 +65,7 @@ def draw():
     else:
         world.draw(screen, offset, resolution)
         
-    time.tick()
-            
-                # Array Entry = file, position
-#    for n in range(0, len(entityMangager.ObjectArray)):
-#        screen.blit(entityMangagerObjectArray[n][0], entityMangager.ObjectArray[n][1])
-#                 # Array Entry = file, position
-#     for n in range(0, len(Menu.ObjectArray)):
-#         screen.blit(Menu.ObjectArray[n][0], Menu.ObjectArray[n][1])
-                # Array Entry = file, position
-                
+    time.tick()                
     display.flip()
 
 # gets the input for the game

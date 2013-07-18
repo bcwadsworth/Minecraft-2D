@@ -1,6 +1,5 @@
 import random
 from Renderers.Block import BlocksManager
-from Renderers.utils import average
 
 class BlockTerrainControl:
     
@@ -19,8 +18,9 @@ class BlockTerrainControl:
         
         self.amtchunks = 1
         self.chunks = [None] * self.amtchunks
-        for i in range(self.amtchunks):
+        for i in range(len(self.chunks)):
             self.chunks[i] = BlockChunkControl(self.seed, ((i * self.chunkDimensions[0]),0), self.blocksManager, self, i)      
+            self.chunks[i].generateTerrain()
         
     def getChunks(self):
         return self.chunks
@@ -76,8 +76,8 @@ class BlockTerrainControl:
         newchunks += self.chunks
         self.chunks = newchunks
         for i in range(len(self.chunks)):
-            if(i > 0):
-                self.chunks[i].setPosInArray(i)
+            self.chunks[i].setPosInArray(i)
+        self.chunks[0].generateTerrain()
     
     def addChunkEast(self):
         self.amtchunks += 1
@@ -86,8 +86,8 @@ class BlockTerrainControl:
         newchunks = self.chunks + newchunks
         self.chunks = newchunks
         for i in range(len(self.chunks)):
-            if(i < len(self.chunks)):
-                self.chunks[i].setPosInArray(i)
+            self.chunks[i].setPosInArray(i)
+        self.chunks[-1].generateTerrain()
         
     def draw(self, screen, offset, resolution):
         width = resolution[0]
@@ -133,8 +133,6 @@ class BlockChunkControl:
         self.posInArray = posInArray
         
         assert isinstance(blocksManager, BlocksManager)
-        
-        self.generateTerrain()
         
     def generateTerrain(self):
         
@@ -218,66 +216,36 @@ class BlockChunkControl:
                         #Flat
                         array[i] = array[i-1]+rand.randint(-1, 1)
             else:
-                print "==========BEGIN LOG========="
-                print "Our chunk pos: "+str(self.getPosition()[0])+" East: "+str(self.getNeighborChunk(0).getPosition()[0])
                 if(inOtherChunk and i == 0):
                     if(self.getNeighborChunk(0).getNoise(id)[1] < self.getNeighborChunk(0).getNoise(id)[0]):
                         #Going up
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = self.getNeighborChunk(0).getNoise(id)[0]+rand.randint(-2, 1)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                     elif(self.getNeighborChunk(0).getNoise(id)[1] > self.getNeighborChunk(0).getNoise(id)[0]):
                         #Going down
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = self.getNeighborChunk(0).getNoise(id)[0]+rand.randint(-1, 2)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                     elif(self.getNeighborChunk(0).getNoise(id)[1] == self.getNeighborChunk(0).getNoise(id)[0]):
                         #Flat
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = self.getNeighborChunk(0).getNoise(id)[0]+rand.randint(-1, 1)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                 elif(inOtherChunk and i == 1):
                     if(self.getNeighborChunk(0).getNoise(id)[0] < array[-1-0]):
                         #Going up
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = array[-1]+rand.randint(-2, 1)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                     elif(self.getNeighborChunk(0).getNoise(id)[0] > array[-1-0]):
                         #Going down
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = array[-1]+rand.randint(-1, 2)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                     elif(self.getNeighborChunk(0).getNoise(id)[0] == array[-1-0]):
                         #Flat
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = array[-1]+rand.randint(-1, 1)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                 else:
                     if(array[-1-i+2] < array[-1-i+1]):
                         #Going up
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = array[-1-i+1]+rand.randint(-2, 1)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                     elif(array[-1-i+2] > array[-1-i+1]):
                         #Going down
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = array[-1-i+1]+rand.randint(-1, 2)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
                     elif(array[-1-i+2] == array[-1-i+1]):
                         #Flat
-                        print "Before: "+str(self.getNeighborChunk(0).getNoise(id)[0])
                         array[-1-i] = array[-1-i+1]+rand.randint(-1, 1)
-                        print "After: "+str(array[-1-i])
-                        print "Array: "+str(array)
-        print "Array: "+str(array)
         if id == 1:
             self.noisea = array
         elif id == 2:
@@ -343,7 +311,6 @@ class BlockChunkControl:
             if(self.posInArray - 1 < 0):
                 return None
             else:
-                print self.posInArray
                 return self.terrainControl.getChunks()[self.posInArray - 1]
         
         
