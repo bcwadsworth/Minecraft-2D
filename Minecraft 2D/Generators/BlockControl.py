@@ -166,6 +166,14 @@ class BlockChunkControl:
             elif(noiseb[x] < self.getDimensions()[1]-y-2):
                 blocks[i] = self.blocksManager.getBlockById(0)
                 
+        for i in range(len(blocks)):
+            x = i%self.dimensions[0]
+            y = i/self.dimensions[0]
+            if(blocks[i].getId() == 2): #Grass
+                if(blocks[self.getNeighborBlock(i, 1)].getId() == 0 and blocks[self.getNeighborBlock(i, 3)].getId() == 0):
+                    blocks[i] = self.blocksManager.getBlockById(0)
+                    blocks[self.getNeighborBlock(i, 2)] = self.blocksManager.getBlockById(2)
+                
         self.blocks = blocks
                 
     def generateNoise(self, rand, id):
@@ -285,7 +293,7 @@ class BlockChunkControl:
     
     def getNeighborBlock(self, block, direction):
         if(direction == 0): #North
-            return block - self.getDimensions()[1]
+            return block - self.getDimensions()[0]
         if(direction == 1): #East
             if((block + 1) % self.getDimensions()[1] > block % self.getDimensions()[1]):
                 return block + 1
@@ -293,7 +301,7 @@ class BlockChunkControl:
                 neighborChunk = self.getNeighborChunk(0)
                 return neighborChunk.getBlocks()[block - (block % self.getDimensions()[1])]
         if(direction == 2): #South
-            return block + self.getDimensions()[1]
+            return block + self.getDimensions()[0]
         if(direction == 3): #West
             if((block - 1) % self.getDimensions()[1] < block % self.getDimensions()[1]):
                 return block - 1
