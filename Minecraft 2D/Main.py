@@ -77,11 +77,14 @@ def draw():
 def gameinput():
     global offset
     global menu
+    global showInventory
     
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 quitGame()
+            if event.key == pygame.K_i:
+                showInventory = not showInventory
         elif event.type == pygame.QUIT:
             quitGame()    
         if menu:
