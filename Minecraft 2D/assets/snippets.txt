@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 Without Portals!!! - Stop the Theif!!! - Started by Mojang!!! - In Two Dimensions!!!
-=======
-It's a theif - Don't test me - This was not made by Minecraft
->>>>>>> branch 'master' of https://github.com/bcwadsworth/Minecraft-2D.git
