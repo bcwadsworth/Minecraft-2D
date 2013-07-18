@@ -136,7 +136,7 @@ class BlockChunkControl:
         
     def generateTerrain(self):
         
-        blocks = [None] * (self.dimensions[0]*self.dimensions[1])
+        self.blocks = [None] * (self.dimensions[0]*self.dimensions[1])
         
         rand = random.Random()
         rand.seed(self.seed)
@@ -149,32 +149,48 @@ class BlockChunkControl:
         self.generateNoise (rand,2)
         noiseb = self.noiseb
 
-        for i in range(len(blocks)):
+        for i in range(len(self.blocks)):
             x = i%self.dimensions[0]
             y = i/self.dimensions[0]
             if(noiseb[x] >= self.getDimensions()[1]-y-56):
                 if random.randrange(1,51) == 1:
-                    blocks[i] = self.blocksManager.getBlockById(15)
+                    self.blocks[i] = self.blocksManager.getBlockById(15)
                 elif random.randrange(1,31) == 1:
-                    blocks[i] = self.blocksManager.getBlockById(16)
+                    self.blocks[i] = self.blocksManager.getBlockById(16)
                 else:
-                    blocks[i] = self.blocksManager.getBlockById(1)
+                    self.blocks[i] = self.blocksManager.getBlockById(1)
             elif(noisea[x] == self.getDimensions()[1]-y-64):
-                blocks[i] = self.blocksManager.getBlockById(2)
+                self.blocks[i] = self.blocksManager.getBlockById(2)
             elif(noisea[x] > self.getDimensions()[1]-y-64 and noiseb[x] < 256-y-56):
-                blocks[i] = self.blocksManager.getBlockById(3)
+                self.blocks[i] = self.blocksManager.getBlockById(3)
             elif(noiseb[x] < self.getDimensions()[1]-y-2):
-                blocks[i] = self.blocksManager.getBlockById(0)
+                self.blocks[i] = self.blocksManager.getBlockById(0)
                 
-        for i in range(len(blocks)):
+                #self.getNeighborChunk(0)
+                
+        for i in range(len(self.blocks)):
             x = i%self.dimensions[0]
             y = i/self.dimensions[0]
-            if(blocks[i].getId() == 2): #Grass
-                if(blocks[self.getNeighborBlock(i, 1)].getId() == 0 and blocks[self.getNeighborBlock(i, 3)].getId() == 0):
-                    blocks[i] = self.blocksManager.getBlockById(0)
-                    blocks[self.getNeighborBlock(i, 2)] = self.blocksManager.getBlockById(2)
-                
-        self.blocks = blocks
+            if(self.blocks[i].getId() == 2): #Grass
+                if(not self.getNeighborBlock(i, 1) == None and not self.getNeighborBlock(i, 3) == None):
+                    eastAir = False
+                    westAir = False
+                    if(self.getNeighborBlock(i, 1)[1] == 1):
+                        if(self.getNeighborChunk(0).getBlocks()[self.getNeighborBlock(i, 1)[0]].getId() == 0):
+                            eastAir = True
+                    else:
+                        if(self.blocks[self.getNeighborBlock(i, 1)[0]].getId() == 0):
+                            eastAir = True
+                        
+                    if(self.getNeighborBlock(i, 3)[1] == 1):
+                        if(self.getNeighborChunk(0).getBlocks()[self.getNeighborBlock(i, 3)[0]].getId() == 0):
+                            westAir = True
+                    else:
+                        if(self.blocks[self.getNeighborBlock(i, 3)[0]].getId() == 0):
+                            westAir = True
+                    if(eastAir == True and westAir == True):
+                        self.blocks[i] = self.blocksManager.getBlockById(0)
+                        self.blocks[self.getNeighborBlock(i, 2)[0]] = self.blocksManager.getBlockById(2)
                 
     def generateNoise(self, rand, id):
         array = [0] * self.getDimensions()[0]
@@ -293,22 +309,28 @@ class BlockChunkControl:
     
     def getNeighborBlock(self, block, direction):
         if(direction == 0): #North
-            return block - self.getDimensions()[0]
+            return block - self.getDimensions()[0], 0
         if(direction == 1): #East
             if((block + 1) % self.getDimensions()[1] > block % self.getDimensions()[1]):
-                return block + 1
+                return block + 1, 0
             else:
                 neighborChunk = self.getNeighborChunk(0)
-                return neighborChunk.getBlocks()[block - (block % self.getDimensions()[1])]
+                if(not neighborChunk == None):
+                    return block - (block % self.getDimensions()[1]), 1
+                else:
+                    return None
         if(direction == 2): #South
-            return block + self.getDimensions()[0]
+            return block + self.getDimensions()[0], 0
         if(direction == 3): #West
             if((block - 1) % self.getDimensions()[1] < block % self.getDimensions()[1]):
-                return block - 1
+                return block - 1, 0
             else:
                 neighborChunk = self.getNeighborChunk(0)
-                return neighborChunk.getBlocks()[block + (self.getDimensions()[1] - (block % self.getDimensions()[1]))]
-        
+                if(not neighborChunk == None):
+                    return block + (self.getDimensions()[1] - (block % self.getDimensions()[1])), 1
+                else:
+                    return None
+                    
     def getNeighborChunk(self, direction):
         if(direction == 0): #East
             if(self.posInArray + 1 > len(self.terrainControl.getChunks())-1):
