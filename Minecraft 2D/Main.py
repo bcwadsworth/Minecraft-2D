@@ -6,6 +6,9 @@ from Blockmanagers.Inventory import *
 from Blockmanagers.Crafting import *
 from Renderers.Menu import *
 from Blockmanagers.steven import *
+playerx = 0
+playery = 0
+playerSpawn = False
 
 
 #As part of a required Enrichment Center protocol,
@@ -19,6 +22,8 @@ location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
 gameinput = input.inputhandler()
 
+playerx = width/2-8
+playery = 250
 
 display = pygame.display
 screen = None
@@ -76,7 +81,7 @@ def draw():
         if showInventory:
             playerInventory.draw(screen)
         
-    position(250,250)
+    position(playerx,playery)
     step(0,0)
     setscreen(screen, width)    
     
