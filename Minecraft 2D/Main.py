@@ -124,6 +124,18 @@ def gameInput():
         else:
             showInventory = True
     vdir = 0
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                quitGame()
+            if event.key == pygame.K_i:
+                showInventory = not showInventory
+        elif event.type == pygame.QUIT:
+            quitGame()
+    
+    pressed = pygame.key.get_pressed()
+    showInventory = True
+    vdir = 0
 
     #moves the viewpoint
     offset[0] += gameinput.moveDir * world.getBlockDimensions()[0]
