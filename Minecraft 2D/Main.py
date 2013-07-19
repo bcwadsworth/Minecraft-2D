@@ -7,6 +7,7 @@ from Blockmanagers.Crafting import *
 from Renderers.Menu import *
 from Blockmanagers.steven import *
 
+
 #As part of a required Enrichment Center protocol,
 #the previous statement that we would not monitor
 #the test area was a complete fabrication.
@@ -18,9 +19,6 @@ location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
 gameinput = input.inputhandler()
 
-stevenx = (width/2)-8
-steveny = height/2
-steven.setscreen(screen,width)
 
 display = pygame.display
 screen = None
@@ -55,6 +53,8 @@ def main():
         gameInput()
         draw()
         clock.tick()
+        
+       
 
 def spawnPlayer():
     global offset, playerPos, playerInventory
@@ -63,7 +63,7 @@ def spawnPlayer():
     assert isinstance(chunk, BlockChunkControl)
     playerInventory = storeinventory(36, width, height)
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
-    #setscreen(screen, width)
+    setscreen(screen, width)
     
 
 def draw():
@@ -75,11 +75,14 @@ def draw():
         world.draw(screen, offset, resolution)
         if showInventory:
             playerInventory.draw(screen)
-        
+    '''    
+    position(10,10)
+    step(1,1)
+    setscreen(screen, width)    
+    '''
     time.tick()                
     display.flip()
-    #position(0,0)
-    #step(0)
+    
 
 # gets the input for the game
 def gameInput():
@@ -106,22 +109,6 @@ def gameInput():
         else:
             showInventory = True
     vdir = 0
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                quitGame()
-            if event.key == pygame.K_i:
-                showInventory = not showInventory
-        elif event.type == pygame.QUIT:
-            quitGame()    
-        if menu:
-            request = mainMenu.getEvents(event)
-            if request == 1:
-                quitGame()
-            elif request == 2:
-                menu = False
-    
-    pressed = pygame.key.get_pressed()
 
     #moves the viewpoint
     offset[0] += gameinput.moveDir * world.getBlockDimensions()[0]
@@ -131,9 +118,7 @@ def gameInput():
         vdir = 1
     offset[1] += vdir * world.getBlockDimensions()[0]
     
-    if gameinput.moveDir == 1
-        
-
+    
 def quitGame():
     global playing
     playing = False
