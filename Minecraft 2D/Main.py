@@ -8,7 +8,6 @@ from Renderers.Menu import *
 from Blockmanagers.steven import *
 playerx = 0
 playery = 0
-playerSpawn = False
 
 
 #As part of a required Enrichment Center protocol,
@@ -80,9 +79,9 @@ def draw():
         world.draw(screen, offset, resolution)
         if showInventory:
             playerInventory.draw(screen)
-        
+  
     position(playerx,playery)
-    step(0,0)
+    step(1,1)
     setscreen(screen, width)    
     
     time.tick()                
