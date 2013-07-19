@@ -11,27 +11,26 @@ imcr = 1
 lmg = 1
 lmcr = 1
 #Image
-arm1 = pygame.image.load("Steve Arm1.png")
-arm2 = pygame.image.load("Steve Arm2.png")
-arm3 = pygame.image.load("Steve Arm3.png")
-arm4 = pygame.image.load("Steve Arm4.png")
-arm5 = pygame.image.load("Steve Arm5.png")
-arm10 = pygame.image.load("Steve Arm10.png")
-arm22 = pygame.image.load("Steve Arm-2.png")
-arm23 = pygame.image.load("Steve Arm-3.png")
-arm24 = pygame.image.load("Steve Arm-4.png")
-arm25 = pygame.image.load("Steve Arm-5.png")
-leg1 = pygame.image.load("Steve Leg1.png")
-leg2 = pygame.image.load("Steve Leg2.png")
-leg3 = pygame.image.load("Steve Leg3.png")
-leg4 = pygame.image.load("Steve Leg4.png")
-leg5 = pygame.image.load("Steve Leg5.png")
-leg22 = pygame.image.load("Steve Leg-2.png")
-leg23 = pygame.image.load("Steve Leg-3.png")
-leg24 = pygame.image.load("Steve Leg-4.png")
-leg25 = pygame.image.load("Steve Leg-5.png")
-tor = pygame.image.load("Stevie Torso.png")
-torr = pygame.image.load("Stevie Torso2.png")
+arm1 = pygame.image.load("assets/entities/Steve Arm1.png")
+arm2 = pygame.image.load("assets/entities/Steve Arm2.png")
+arm3 = pygame.image.load("assets/entities/Steve Arm3.png")
+arm4 = pygame.image.load("assets/entities/Steve Arm4.png")
+arm5 = pygame.image.load("assets/entities/Steve Arm5.png")
+arm22 = pygame.image.load("assets/entities/Steve Arm-2.png")
+arm23 = pygame.image.load("assets/entities/Steve Arm-3.png")
+arm24 = pygame.image.load("assets/entities/Steve Arm-4.png")
+arm25 = pygame.image.load("assets/entities/Steve Arm-5.png")
+leg1 = pygame.image.load("assets/entities/Steve Leg1.png")
+leg2 = pygame.image.load("assets/entities/Steve Leg2.png")
+leg3 = pygame.image.load("assets/entities/Steve Leg3.png")
+leg4 = pygame.image.load("assets/entities/Steve Leg4.png")
+leg5 = pygame.image.load("assets/entities/Steve Leg5.png")
+leg22 = pygame.image.load("assets/entities/Steve Leg-2.png")
+leg23 = pygame.image.load("assets/entities/Steve Leg-3.png")
+leg24 = pygame.image.load("assets/entities/Steve Leg-4.png")
+leg25 = pygame.image.load("assets/entities/Steve Leg-5.png")
+tor = pygame.image.load("assets/entities/Stevie Torso.png")
+torr = pygame.image.load("assets/entities/Stevie Torso2.png")
 screen = 0
 def setscreen(sc,wi):
     global stex
@@ -77,6 +76,7 @@ def step(d,sh):
     if lmg < -3:
         lmcr = 1
 def leg(lmg):
+    print("lmg working")
     if lmg == 0:
         screen.blit(leg1, (stex,stey))
     if lmg == 1:
@@ -106,23 +106,24 @@ def leg(lmg):
 def walk(img,d):
     if d == 1:
         screen.blit(tor,(stex,stey))
+        
     if d == -1:
         screen.blit(torr,(stex,stey))
     if img == 0:
-        screen.blit(arm1, (armx,stey-5))
+        screen.blit(arm1, (stex-17,stey-5))
     if img == 1:
-        screen.blit(arm2, (armx,stey-5))
+        screen.blit(arm2, (stex-17,stey-5))
     if img == 2:
-        screen.blit(arm3,(armx,stey-5))
+        screen.blit(arm3,(stex-17,stey-5))
     if img == 3:
-        screen.blit(arm4,(armx+1,stey-5))
+        screen.blit(arm4,(stex-16,stey-5))
     if img == 4:
-        screen.blit(arm5,(armx+1,stey-5))
+        screen.blit(arm5,(stex-16,stey-5))
     if img == -1:
-        screen.blit(arm22, (armx,stey-5))
+        screen.blit(arm22, (stex-17,stey-5))
     if img == -2:
-        screen.blit(arm23,(armx,stey-5))
+        screen.blit(arm23,(stex-17,stey-5))
     if img == -3:
-        screen.blit(arm24,(armx-1,stey-5))
+        screen.blit(arm24,(stex-18,stey-5))
     if img == -4:
-        screen.blit(arm25,(armx-1,stey-5))
+        screen.blit(arm25,(stex-18,stey-5))
