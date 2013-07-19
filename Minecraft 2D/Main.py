@@ -8,6 +8,8 @@ from Renderers.Menu import *
 from Blockmanagers.steven import *
 playerx = 0
 playery = 0
+direction = 1
+walkdir = 0
 
 
 #As part of a required Enrichment Center protocol,
@@ -71,6 +73,11 @@ def spawnPlayer():
     
 
 def draw():
+    global walkdir
+    global direction
+    global playerx
+    global playery
+    global width
     screen.fill(time.color)
     
     if menu:
@@ -80,8 +87,10 @@ def draw():
         if showInventory:
             playerInventory.draw(screen)
   
+  
+    print (walkdir)
     position(playerx,playery)
-    step(1,1)
+    step(walkdir,direction)
     setscreen(screen, width)    
     
     time.tick()                
@@ -90,6 +99,8 @@ def draw():
 
 # gets the input for the game
 def gameInput():
+    global walkdir
+    global direction
     global offset
     global menu
     global showInventory
@@ -121,6 +132,19 @@ def gameInput():
     elif gameinput.crouch:
         vdir = 1
     offset[1] += vdir * world.getBlockDimensions()[0]
+    
+    if gameinput.moveDir == 1:
+        direction = 1
+        walkdir = 1
+        print("direction 1")
+    elif gameinput.moveDir == -1:
+        direction = -1
+        walkdir = -1
+        print("direction -1")
+        print(direction)
+        print(walkdir)
+    else:
+        walkdir = 0
     
     
 def quitGame():
