@@ -16,20 +16,11 @@ arm2 = pygame.image.load("Steve Arm2.png")
 arm3 = pygame.image.load("Steve Arm3.png")
 arm4 = pygame.image.load("Steve Arm4.png")
 arm5 = pygame.image.load("Steve Arm5.png")
-arm6 = pygame.image.load("Steve Arm6.png")
-arm7 = pygame.image.load("Steve Arm7.png")
-arm8 = pygame.image.load("Steve Arm8.png")
-arm9 = pygame.image.load("Steve Arm9.png")
 arm10 = pygame.image.load("Steve Arm10.png")
 arm22 = pygame.image.load("Steve Arm-2.png")
 arm23 = pygame.image.load("Steve Arm-3.png")
 arm24 = pygame.image.load("Steve Arm-4.png")
 arm25 = pygame.image.load("Steve Arm-5.png")
-arm26 = pygame.image.load("Steve Arm-6.png")
-arm27 = pygame.image.load("Steve Arm-7.png")
-arm28 = pygame.image.load("Steve Arm-8.png")
-arm29 = pygame.image.load("Steve Arm-9.png")
-arm210 = pygame.image.load("Steve Arm-10.png")
 leg1 = pygame.image.load("Steve Leg1.png")
 leg2 = pygame.image.load("Steve Leg2.png")
 leg3 = pygame.image.load("Steve Leg3.png")
@@ -56,7 +47,7 @@ def position(x,y):
     global stex
     stey = y
     stex = x
-def step(d):
+def step(d,sh):
     global arg
     global arg2
     global img
@@ -76,7 +67,7 @@ def step(d):
         arg2 = lmg
         lmg = lmg + lmcr
     leg(arg2)
-    walk(arg,d)
+    walk(arg,sh)
     if img > 3:
         imcr = -1
     if img < -3:

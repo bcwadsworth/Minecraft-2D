@@ -5,16 +5,24 @@ from Renderers.Block import *
 from Blockmanagers.Inventory import *
 from Blockmanagers.Crafting import *
 from Renderers.Menu import *
+from Blockmanagers.steven import *
+playerx = 0
+playery = 0
+
 
 #As part of a required Enrichment Center protocol,
 #the previous statement that we would not monitor
 #the test area was a complete fabrication.
 #We will stop enhancing the truth in three. two. *zzzt*
+
  
 resolution = width, height = 850, 550
 location = winx, winy = (width/2, height/2)
 flags = 0 #pygame.NOFRAME|pygame.FULLSCREEN
 gameinput = input.inputhandler()
+
+playerx = width/2-8
+playery = 250
 
 display = pygame.display
 screen = None
@@ -49,6 +57,8 @@ def main():
         gameInput()
         draw()
         clock.tick()
+        
+       
 
 def spawnPlayer():
     global offset, playerPos, playerInventory
@@ -57,6 +67,8 @@ def spawnPlayer():
     assert isinstance(chunk, BlockChunkControl)
     playerInventory = storeinventory(36, width, height)
     offset = [0, (chunk.getDimensions()[1]-80)*world.getBlockDimensions()[0]]
+    setscreen(screen, width)
+    
 
 def draw():
     screen.fill(time.color)
@@ -67,16 +79,20 @@ def draw():
         world.draw(screen, offset, resolution)
         if showInventory:
             playerInventory.draw(screen)
-        
+  
+    position(playerx,playery)
+    step(1,1)
+    setscreen(screen, width)    
+    
     time.tick()                
     display.flip()
+    
 
 # gets the input for the game
 def gameInput():
     global offset
     global menu
     global showInventory
-    
     menuReturn = 0
     gameinput.input()
     if gameinput.quit:
@@ -107,7 +123,9 @@ def gameInput():
             quitGame()
     
     pressed = pygame.key.get_pressed()
-    
+    showInventory = True
+    vdir = 0
+
     #moves the viewpoint
     offset[0] += gameinput.moveDir * world.getBlockDimensions()[0]
     if gameinput.jump:
@@ -115,7 +133,8 @@ def gameInput():
     elif gameinput.crouch:
         vdir = 1
     offset[1] += vdir * world.getBlockDimensions()[0]
-
+    
+    
 def quitGame():
     global playing
     playing = False
