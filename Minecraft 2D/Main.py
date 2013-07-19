@@ -134,7 +134,6 @@ def gameInput():
             quitGame()
     
     pressed = pygame.key.get_pressed()
-    showInventory = True
     vdir = 0
 
     #moves the viewpoint
