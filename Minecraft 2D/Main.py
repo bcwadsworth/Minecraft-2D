@@ -75,11 +75,11 @@ def draw():
         world.draw(screen, offset, resolution)
         if showInventory:
             playerInventory.draw(screen)
-    '''    
-    position(10,10)
-    step(1,1)
+        
+    position(250,250)
+    step(0,0)
     setscreen(screen, width)    
-    '''
+    
     time.tick()                
     display.flip()
     
