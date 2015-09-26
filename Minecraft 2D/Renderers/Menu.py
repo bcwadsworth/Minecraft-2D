@@ -44,7 +44,7 @@ class Menu:
         self.playButton = pygame.image.load('assets/GUI/playButton.png')
         self.optionsButton = pygame.image.load('assets/GUI/optionsButton.png')
         self.quitButton = pygame.image.load('assets/GUI/quitButton.png')
-        self.logo = pygame.image.load('assets/GUI/logo.png')
+        self.logo = pygame.image.load('assets/GUI/Logo.png')
         
         #set up the screen  
         self.screen = surface
